@@ -3,8 +3,8 @@ const {Schema, model} = require('mongoose');
 
 
 const user = new Schema({
-  username: {type: String, unique: true},
-  email: {type: String, unique: true},
+  username: {type: String, unique: true, required: true},
+  email: {type: String, unique: true, required: true},
   dob: Date,
   nat: String,
   img: String,
@@ -13,7 +13,7 @@ const user = new Schema({
     // setting2: state
   },
   games: {},
-  achievements: ObjectId, // achievement document
+  // achievements: ObjectId, // achievement document
 })
 
 module.exports = model('User', user);

@@ -1,17 +1,17 @@
-const {Schema, model} = require('mongoose');
+// const {Schema, model} = require('mongoose');
 
 
-const achievement = new Schema({
-  user: ObjectId, // username of user
-  gamesPlayed: [Date],
-  corretAnswers: [Date],
-  highScore: [Date],
-  totalScore: [Date],
-  completedCategoriesInOneGame: [Date],
-  totalCompletedCategories: [Date],
-})
+// const achievement = new Schema({
+//   user: ObjectId, // username of user
+//   gamesPlayed: [Date],
+//   correctAnswers: [Date],
+//   highScore: [Date],
+//   totalScore: [Date],
+//   completedCategoriesInOneGame: [Date],
+//   totalCompletedCategories: [Date],
+// })
 
-module.exports = model('Achievement', achievement);
+// module.exports = model('Achievement', achievement);
 
 
 

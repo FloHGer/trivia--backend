@@ -10,21 +10,21 @@ const {routeError, errorHandler} = require ('./errors/errorHandler')
 // Server Start
 const app = express();
 
-// Database Connection
-// mongoose.connect(process.env.DB_CONNECT)
-// mongoose.connection
-//  .on('error', console.error)
-//  .on('connecting', ()=>{
-//      console.log('Connecting to Database...')
-//  })
-//  .on('connected', ()=>{
-//      console.log('Database Connection established!');
-//  })
+//Database Connection
+mongoose.connect(process.env.DB_CONNECT)
+mongoose.connection
+ .on('error', console.error)
+ .on('connecting', ()=>{
+     console.log('Connecting to Database...')
+ })
+ .on('connected', ()=>{
+     console.log('Database Connection established!');
+ })
 
 
 
 // Middleware
-
+app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
 // Routes

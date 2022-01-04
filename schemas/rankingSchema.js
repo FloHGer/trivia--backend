@@ -1,8 +1,8 @@
-const {Schema, model} = require('mongoose');
+// const {Schema, model} = require('mongoose');
 
 
-const ranking = new Schema({
+// const ranking = new Schema({
 
-})
+// })
 
-module.exports = model('Ranking', ranking);
+// module.exports = model('Ranking', ranking);

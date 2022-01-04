@@ -20,4 +20,4 @@ const errorHandler = (error, req, res, next) => {
    });
 };
 
-module.exports = { routeError, errorHandler };
+module.exports = { routeError, errorHandler, HttpError };
