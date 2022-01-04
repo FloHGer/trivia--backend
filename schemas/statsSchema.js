@@ -8,9 +8,8 @@ const stats = new Schema({
   score: {
     total: Number,
     high: Number,
-  }
+  },
   categories: game.categories,
-
 })
 
 module.exports = model('Stats', stats);
