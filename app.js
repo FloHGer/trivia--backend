@@ -31,6 +31,7 @@ app.use(express.json())
 // app.use((req, res) => res.send('<h1>TRIVIA GAME backend</h1>'));
 
 app.post('/login', loginController.loginUser)
+app.get('/login/:tid', loginController.verifyToken)
 app.post("/logout", loginController.logoutUser);
 app.post("/signup", loginController.signupUser);
 

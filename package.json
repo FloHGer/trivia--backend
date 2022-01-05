@@ -23,7 +23,9 @@
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.2",
-    "nodemailer": "^6.7.2"
+    "nodemailer": "^6.7.2",
+    "passport": "^0.5.2",
+    "passport-oauth": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
