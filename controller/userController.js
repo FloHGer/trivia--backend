@@ -2,28 +2,28 @@ const HttpError = require('../errors/errorController.js')
 
 module.exports = userController = {
    getUser: (req, res, nxt) => {
-      console.log('post on /login');
+      console.log('POST on /login');
    },
    patchUser: (req, res, nxt) => {
-      console.log('post on /logout');
+      console.log('POST on /logout');
    },
    deleteUser: (req, res, nxt) => {
-      console.log('post on /signup');
+      console.log('POST on /signup');
    },
    getGames: (req, res, nxt) => {
-      console.log('get on /games');
+      console.log('GET on /games');
    },
    postGames: (req, res, nxt) => {
-      console.log('post on /games');
+      console.log('POST on /games');
    },
    getRanks: (req, res, nxt) => {
-      console.log('get on /ranks');
+      console.log('GET on /ranks');
    },
    getStatistics: (req, res, nxt) => {
-      console.log('get on /stats');
+      console.log('GET on /stats');
    },
    getAchievements: (req, res, nxt) => {
-      console.log('get on /achivs');
+      console.log('GET on /achivs');
    },
    
 };

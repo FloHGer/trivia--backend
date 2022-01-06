@@ -1,4 +1,4 @@
-const router = require('express').Router();
+module.exports = router = require('express').Router();
 
 const userController = require('../controller/userController.js');
 
@@ -18,5 +18,3 @@ router.get('/ranks', userController.getRanks);
 router.get('/stats', userController.getStatistics);
 
 router.get('/achivs', userController.getAchievements);
-
-module.exports = router;

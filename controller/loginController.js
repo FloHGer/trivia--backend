@@ -1,12 +1,15 @@
-const {HttpError} = require('../errors/errorHandler');
-const User = require('../schemas/userSchema');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
+const HttpError = require('../errors/errorController.js');
+const User = require('../schemas/userSchema');
 const sendMail = require('../common/nodemailer.js');
+require('../common/googleAuth.js');
+
 
 module.exports = loginController = {
   loginRequest: async (req, res, nxt) => {
-    console.log('post on /login');
+    console.log('POST on /login');
     try {
       // check user by email
       const foundUser = await User.findOne({email: req.body.email});
@@ -31,7 +34,7 @@ module.exports = loginController = {
 
 
   verifyToken: async (req, res, nxt) => {
-    console.log('get on /verifyToken');
+    console.log('GET on /login/tid');
     const foundUser = await User.findOne({token: req.params.tid});
     if(foundUser) console.log('success'); // create session here
 
@@ -39,15 +42,32 @@ module.exports = loginController = {
   },
 
 
+  googleAuth: (req, res, nxt) => {
+    console.log('GET on /login/tid');
+    passport.authenticate('google', {scope: ['email', 'profile']})
+    res.send('works')
+  },
+
+
+  googleCallback: (req, res, nxt) => {
+    passport.authenticate('google', {
+      successRedirect: '/asd',
+      failureRedirect: '/login/google',
+    })
+  },
+
+
   logoutUser: (req, res, nxt) => {
-    console.log('post on /logout');
-    // delete session here
+    console.log('POST on /logout');
+    req.logout();
+    req.session.destroy();
+    res.send('logged out');
   },
 
 
   signupUser: async (req, res, nxt) => {
     try {
-      console.log('post on /signup');
+      console.log('POST on /signup');
       await User.create(req.body, (error, userDocument) => {
         if (error) return nxt(new HttpError(500, 'user not created'));
 

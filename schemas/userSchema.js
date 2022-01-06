@@ -11,7 +11,7 @@ const user = new Schema({
     // setting1: state
     // setting2: state
   },
-  achievements: ObjectId, // achievement document
+  // achievements: ObjectId, // achievement document
 })
 
 module.exports = model('User', user);
