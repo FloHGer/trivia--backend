@@ -4,6 +4,7 @@ const {Schema, model} = require('mongoose');
 const user = new Schema({
   username: {type: String, unique: true},
   email: {type: String, unique: true},
+  token: String,
   dob: Date,
   nat: String,
   img: String,

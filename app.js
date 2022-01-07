@@ -1,13 +1,13 @@
 const express = require('express');
 const session = require('express-session');
 const mongoose = require('mongoose');
+const passport = require('passport');
 require('dotenv').config();
 
 const loginRouter = require('./routes/loginRoute.js');
 const userRouter = require('./routes/userRoute.js');
 const loginController = require('./controller/loginController.js');
-const errorController = require('./errors/errorController.js');
-const passport = require('passport');
+const {errorController} = require('./errors/errorController.js');
 
 
 // Server Start

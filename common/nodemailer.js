@@ -9,13 +9,14 @@ const emailBody = (username, link) => {
     html:
       `
         <h3>Hello ${username},</h3>
-        <p>We just recieved a logIn request for your EMail.</p>
+        <p>We just recieved a LogIn request for your EMail.</p>
         <p>To complete the LogIn just click this <a href= ${link}>LINK</a></p>
       `,
   }
 }
 
-module.exports = sendMail = async ({sender, recipient, subject, username, link}) => { 
+module.exports = sendMail = async ({recipient, subject, username, link}) => { 
+  console.log(link)
   // create reusable transporter object using the default SMTP transport
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
@@ -29,7 +30,7 @@ module.exports = sendMail = async ({sender, recipient, subject, username, link})
 
   // send mail with defined transport object
   const status = await transporter.sendMail({
-    from: sender,
+    from: process.env.EMAIL_ADD,
     to: recipient,
     subject: subject,
     text: emailBody(username, link).plain, // plain text body
@@ -37,6 +38,7 @@ module.exports = sendMail = async ({sender, recipient, subject, username, link})
   });
 
   if(status) return 'email sent';
+  if(!status) return 'email not sent';
 }
 
 

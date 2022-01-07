@@ -1,4 +1,4 @@
-module.exports = router = require('express').Router();
+const router = require('express').Router();
 
 const loginController = require('../controller/loginController.js');
 
@@ -9,5 +9,7 @@ router.get('/google/oauth', loginController.googleCallback);
 
 
 // EMail / Token
-router.post(loginController.loginRequest);
+router.post('/', loginController.loginRequest);
 router.get('/:tid', loginController.verifyToken);
+
+module.exports = router;

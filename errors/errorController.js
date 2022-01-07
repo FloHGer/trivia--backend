@@ -1,4 +1,4 @@
-module.exports = class HttpError extends Error {
+class HttpError extends Error {
   constructor (code, message) {
     super(message)
     this.code = code
@@ -6,7 +6,7 @@ module.exports = class HttpError extends Error {
 }
 
 
-module.exports = errorController = {
+const errorController = {
   routeError: (req, res, nxt) => {
     nxt(new HttpError(404, 'We don\'t know where you wanna go!'));
   },
@@ -20,5 +20,6 @@ module.exports = errorController = {
   },
 }
 
+module.exports = {HttpError, errorController};
 
 // if(res.headerSent) return nxt(error) // -> to be reviewed
