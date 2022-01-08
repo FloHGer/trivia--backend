@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
+
 const {HttpError} = require('../errors/errorController.js');
 const User = require('../schemas/userSchema');
 const sendMail = require('../common/nodemailer.js');
-require('../common/googleAuth.js');
+require('../common/passport.js');
 
 
 module.exports = loginController = {
@@ -51,8 +52,9 @@ module.exports = loginController = {
 
   googleAuth: (req, res, nxt) => {
     console.log('GET on /login/google');
-    passport.authenticate('google', {scope: ['email', 'profile']})
-    res.send('works')
+    passport.authenticate('google', {scope: ['profile', 'email']})
+    // console.log('inside auth endpoint', scope);
+    // res.send('hmmm')
   },
 
 
@@ -60,8 +62,11 @@ module.exports = loginController = {
     console.log('GET on /login/google/oauth');
     passport.authenticate('google', {
       successRedirect: '/',
+      successMessage: 'login successful ',
       failureRedirect: '/login',
-    })
+      failureMessage: 'login failed',f
+    });
+    res.send('signin process finished');
   },
 
 
