@@ -3,20 +3,20 @@ const router = require('express').Router();
 const userController = require('../controller/userController.js');
 
 router
-  .route('/')
+  .route('/:username')
   .get(userController.getUser)
   .patch(userController.patchUser)
   .delete(userController.deleteUser);
 
 router
-  .route('/games')
+  .route('/:uid/games')
   .get(userController.getGames)
   .post(userController.postGames);
 
-router.get('/ranks', userController.getRanks);
+router.get("/:uid/ranks", userController.getRanks);
 
-router.get('/stats', userController.getStatistics);
+router.get("/:uid/stats", userController.getStatistics);
 
-router.get('/achivs', userController.getAchievements);
+router.get("/:uid/achivs", userController.getAchievements);
 
 module.exports = router;

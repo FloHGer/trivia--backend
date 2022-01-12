@@ -43,7 +43,7 @@ app.use(passport.session());
 // Routes
 app.use('/auth', loginRouter);
 
-app.use('/user/:uid', auth.isLoggedIn, userRouter);
+app.use('/user',  userRouter);
 
 app.post('/feedback', feedbackController);
 
