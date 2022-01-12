@@ -3,18 +3,21 @@ const {Schema, model} = require('mongoose');
 
 
 const user = new Schema({
+  provider: {type: String, required: true},
+  id: {type: Number},
   username: {type: String, unique: true, required: true},
-  email: {type: String, unique: true, required: true},
-  token: String,
-  dob: Date,
-  nat: String,
-  img: String,
+  email: {type: String, unique: true},
+  dob: {type: Date},
+  nat: {type: String},
+  img: {type: String},
+  // experimental from here on
   options: {
     // setting1: state
     // setting2: state
   },
-  games: {},
-  // achievements: ObjectId, // achievement document
+  games: [{type: Schema.Types.ObjectId, ref: 'Games'}],
+  // achievements: ???,
+  // ranking: ???,
 })
 
 module.exports = model('User', user);

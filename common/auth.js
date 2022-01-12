@@ -1,4 +1,4 @@
-const HttpError = require('../errors/errorController.js');
-
-
-module.exports = auth = (req, res, nxt) => req.user ? nxt() : nxt(new HttpError(401, 'not logged in'));
+module.exports = auth = {
+  isLoggedIn: (req, res, nxt) => req.isAuthenticated() ? nxt() : res.redirect('/'),
+  isLoggedOut: (req, res, nxt) => !req.isAuthenticated() ? nxt() : res.redirect('/'),
+}

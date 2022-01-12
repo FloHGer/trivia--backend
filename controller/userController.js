@@ -2,7 +2,9 @@ const {HttpError} = require('../errors/errorController.js')
 
 module.exports = userController = {
    getUser: (req, res, nxt) => {
-      console.log('POST on /login');
+      console.log('GET on /user/:uid/');
+      console.log(req)
+      res.send(`profile of ${req.params}`)
    },
    patchUser: (req, res, nxt) => {
       console.log('POST on /logout');
