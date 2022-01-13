@@ -12,6 +12,7 @@ const errorController = {
   },
   
   errorHandler: (error, req, res, nxt) => {
+    console.log(error);
     res.status(error.code || 500).send({
       error: {
         message: error.message || 'unknown Error',

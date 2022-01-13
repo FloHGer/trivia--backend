@@ -6,9 +6,9 @@ module.exports = userController = {
       console.log("GET on /user/:username/");
       try {
          const user = await User.findOne({ username: req.params.username });
-
-         if (user) return res.send(user);
-         return nxt(new HttpError(504, "User does not exist"));
+         if (user) 
+            return res.send(user);
+         return res.status(204).send("User does not exist");
       } catch (err) {
          nxt(err);
       }
@@ -25,12 +25,11 @@ module.exports = userController = {
          if (user.modifiedCount)
             return res.status(201).send("user successfully updated");
          if (!user.matchedCount)
-            return nxt(
-               new HttpError(404, "can't find the user you're looking for")
-            );
+            return res
+               .status(204)
+               .send("can't find the user you're looking for");
          if (!user.modifiedCount && user.matchedCount)
-            return nxt(new HttpError(504, "Everything is up to date already"));
-         return nxt(new HttpError(504, "this user was not found"));
+            return res.status(304).send("Not modified");
       } catch (err) {
          nxt(err);
       }
@@ -45,30 +44,55 @@ module.exports = userController = {
          if (userToDelete.deletedCount)
             return res.send("user successfully deleted");
 
-         return nxt(
-            new HttpError(
-               504,
+         return res
+            .status(204)
+            .send(
                "user can't be found and deleted. Please check your database!"
-            )
-         );
+            );
       } catch (err) {
          nxt(err);
       }
    },
 
-   getGames: (req, res, nxt) => {
+   getGames: async (req, res, nxt) => {
       console.log("GET on /games");
+      try{  
+         const game = await Game.findOne({username: req.params.username })
+
+      } catch (err) {
+         nxt(err)
+      }
    },
-   postGames: (req, res, nxt) => {
+   postGames: async(req, res, nxt) => {
       console.log("POST on /games");
+      try{
+         const game = await Game.updateOne()
+      } catch (err) {
+         nxt(err)
+      }
    },
-   getRanks: (req, res, nxt) => {
+   getRanks: async (req, res, nxt) => {
       console.log("GET on /ranks");
+      try{
+         const ranking = await Ranking.findOne()
+      } catch (err) {
+         nxt(err)
+      }
    },
-   getStatistics: (req, res, nxt) => {
+   getStatistics: async (req, res, nxt) => {
       console.log("GET on /stats");
+      try{
+         const stats = await Stats.findOne()
+      } catch (err) {
+         nxt(err)
+      }
    },
-   getAchievements: (req, res, nxt) => {
-      console.log("GET on /achivs");
+   getAchievements: async (req, res, nxt) => {
+      console.log("GET on /achieves");
+      try{
+         const achievement = await Achievement.findOne();
+      } catch (err) {
+         nxt(err)
+      }
    },
 };

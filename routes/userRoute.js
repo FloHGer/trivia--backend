@@ -9,14 +9,14 @@ router
   .delete(userController.deleteUser);
 
 router
-  .route('/:uid/games')
+  .route('/:username/games')
   .get(userController.getGames)
   .post(userController.postGames);
 
-router.get("/:uid/ranks", userController.getRanks);
+router.get("/:username/ranks", userController.getRanks);
 
-router.get("/:uid/stats", userController.getStatistics);
+router.get("/:username/stats", userController.getStatistics);
 
-router.get("/:uid/achivs", userController.getAchievements);
+router.get("/:username/achivs", userController.getAchievements);
 
 module.exports = router;

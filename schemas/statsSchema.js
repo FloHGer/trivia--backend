@@ -1,18 +1,18 @@
-// const {Schema, model} = require('mongoose');
+const {Schema, model} = require('mongoose');
 
 
-// const stats = new Schema({
-//   user: ObjectId,
-//   gamesPlayed: Number,
-//   // date??
-//   score: {
-//     total: Number,
-//     high: Number,
-//   },
-//   categories: game.categories,
-// })
+const stats = new Schema({
+  user: ObjectId,
+  gamesPlayed: Number,
+  // date??
+  score: {
+    total: Number,
+    high: Number,
+  },
+  categories: game.categories,
+})
 
-// module.exports = model('Stats', stats);
+module.exports = model('Stats', stats);
 
 
 // SCORE
