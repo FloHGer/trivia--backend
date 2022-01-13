@@ -1,7 +1,7 @@
 class HttpError extends Error {
   constructor (code, message) {
-    super(message)
-    this.code = code
+    super(message);
+    this.code = code;
   }
 }
 
@@ -12,8 +12,9 @@ const errorController = {
   },
   
   errorHandler: (error, req, res, nxt) => {
-    res.status(error.code || 500).send({
-      error: {
+    res
+      .status(error.code || 500)
+      .send({error: {
         message: error.message || 'unknown Error',
       },
     });

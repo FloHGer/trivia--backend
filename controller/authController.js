@@ -12,7 +12,7 @@ module.exports = authController = {
     console.log('POST on /auth/mail');
     try {
       // check for user
-      const DBUser = await User.findOne({email: req.body.email});
+      let DBUser = await User.findOne({email: req.body.email});
       if (!DBUser) {
         // create user if unregistered
         DBUser = await User.create({
@@ -33,11 +33,11 @@ module.exports = authController = {
       if(!update.modifiedCount) return nxt(new HttpError(500, 'user not updated'));
 
       // send mail with token for login
-      const status = sendMail({
+      const status = await sendMail({
         recipient: DBUser.email,
         subject: 'TRIVIA Game - LogIn requested',
-        username: DBUser.username !== DBUser.email ? DBUser.username : 'there',
-        link: `http://${req.headers.host}/?${token}`, // change to https later
+        username: DBUser.username !== DBUser.email ? DBUser.username : 'new user',
+        link: `http://${req.headers.host}/auth/email/?token=${token}`, // change to https later
       });
       if(status) return res.send(status);
     } catch (err) {nxt(err);}

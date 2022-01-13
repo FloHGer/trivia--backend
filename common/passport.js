@@ -11,7 +11,7 @@ passport.use(new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3003/auth/google/callback', // change to https later
+    callbackURL: 'http://localhost:3003/auth/callback', // change to https later
   },
   async (accessToken, refreshToken, profile, done) => {
     let DBUser = await User.findOne({id: profile.id, provider: 'google'});
@@ -36,7 +36,7 @@ passport.use(new GoogleStrategy(
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3003/auth/github/callback',
+    callbackURL: 'http://localhost:3003/auth/callback',
   },
   async (accessToken, refreshToken, profile, done) => {
     let DBUser = await User.findOne({id: profile.id, provider: 'github'});
@@ -59,8 +59,10 @@ passport.use(new GitHubStrategy({
 
 passport.use(new TokenStrategy({
     tokenField: 'token',
+    callbackURL: 'http://localhost:3003/auth/callback',
   },
   async (token, done) => {
+    console.log('token works')
     await User.findOne({token}, (err, user) => {
       if(err) return done(err);
       if(!user) return done(null, false);

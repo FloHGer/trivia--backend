@@ -27,9 +27,9 @@ router.get('/callback', authController.passportCallback);
 
 
 // EMail / Token
-router.post('/mail', auth.isLoggedOut, authController.loginRequest);
-router.get('/mail/:tid', auth.isLoggedOut, passport.authenticate('token'));
-// router.get('/mail/:tid', auth.isLoggedOut, authController.verifyToken);
+router.route('/email')
+  .get(auth.isLoggedOut, (req)=>console.log(req.query), passport.authenticate('token'))
+  .post(auth.isLoggedOut, authController.loginRequest);
 
 
 // EXPORT
