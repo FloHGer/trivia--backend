@@ -5,7 +5,7 @@ const passport = require('passport');
 require('dotenv').config();
 
 const auth = require('./common/auth.js');
-const loginRouter = require('./routes/loginRoute.js');
+const authRouter = require('./routes/authRoute.js');
 const userRouter = require('./routes/userRoute.js');
 const {errorController} = require('./errors/errorController.js');
 const feedbackController = require('./controller/feedbackController.js');
@@ -41,7 +41,8 @@ app.use(passport.session());
 
 
 // Routes
-app.use('/auth', loginRouter);
+app.get('/', (req, res) => console.log(req.query))
+app.use('/auth', authRouter);
 
 app.use('/user/:uid', auth.isLoggedIn, userRouter);
 
