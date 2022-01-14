@@ -15,7 +15,7 @@ const user = new Schema({
     // setting1: state
     // setting2: state
   },
-  games: [{type: Schema.Types.ObjectId, ref: 'Games'}],
+  games: [{type: Schema.Types.ObjectId, ref: 'Game'}],
   // achievements: ???,
   // ranking: ???,
 })
