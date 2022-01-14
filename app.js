@@ -42,9 +42,8 @@ app.use(passport.session());
 
 // Routes
 app.use('/auth', loginRouter);
-
 app.use('/user',  userRouter);
-
+app.route('/game')
 app.post('/feedback', feedbackController);
 
 
