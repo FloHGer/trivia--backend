@@ -2,14 +2,12 @@ const {Schema, model} = require('mongoose');
 
 
 const stats = new Schema({
-  user: ObjectId,
-  gamesPlayed: Number,
-  // date??
+  gamesPlayed: {type: Number},
   score: {
-    total: Number,
-    high: Number,
+    total: {type: Number},
+    high: {type: Number},
   },
-  categories: game.categories,
+  categories: [],
 })
 
 module.exports = model('Stats', stats);

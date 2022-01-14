@@ -1,28 +1,35 @@
 const {Schema, model} = require('mongoose');
 
 
-const game = new Schema({
-   user: {type: Schema.Types.ObjectId, ref: 'User'} , // username of user
-   datePlayed: {type: Date},
-    // custom / quick
-   options: [], // joker / timer
-   score: {type: Number},
-   categories: {
-      categoryName: {
-         answers: {type:[{type:Boolean}]},
-         jokerUsed: {type:Boolean},
-         timeLeft: {type:Number},
-      },
-   },
+const gameSchema = new Schema({
+  user: {type: Schema.Types.ObjectId, ref: 'User'} , // username of user
+  datePlayed: {type: Date},
+	// mode: custom / quick
+  // options: [], joker / timer
+  score: {type: Number},
+  categories: {type: [
+      {
+        name: {type: String},
+        answers: [{type: Boolean}],
+      }
+  ]}
 });
 
-module.exports = model('Game', game);
+module.exports = model('Game', gameSchema);
 
 // {
-//   categoryName1:[true, true, false],
+//  {
+//    name: categoryName1
+//    answers:[true, true, false],
+//  }
 //   categoryName2:[true, false],
 //   categoryName3:[false],
-//   categoryName4:[false],
-//   categoryName5:[false],
-//   categoryName6:[false],
+// }
+
+
+
+// {
+//    answers: {type:[{type:Boolean}]},
+//    jokerUsed: {type:Boolean},
+//    timeLeft: {type:Number},
 // }

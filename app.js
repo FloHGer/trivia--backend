@@ -8,7 +8,7 @@ require('dotenv').config();
 const auth = require('./common/auth.js');
 const authRouter = require('./routes/authRoute.js');
 const userRouter = require('./routes/userRoute.js');
-const {errorController, HttpError} = require('./errors/errorController.js');
+const {errorController} = require('./errors/errorController.js');
 const feedbackController = require('./controller/feedbackController.js');
 
 
@@ -45,22 +45,12 @@ app.use(passport.session());
 
 
 // Routes
-app.use('/auth', loginRouter);
-app.use('/user',  userRouter);
-app.route('/game')
+app.use('/auth', authRouter);
+app.use('/user', userRouter);
+app.get('/rankings', ()=>{});
+app.get('/statistics', ()=>{});
 app.post('/feedback', feedbackController);
 
-app.post('/upload', async(req, res, nxt) => {
-   // works with "multipart/form-data"
-  if(!req.files) return res.status(204).send('no file uploaded');
-  const userImg = req.files.userImg;
-  const path = `./uploads/images/${userImg.name}`;
-  userImg.mv(path);
-  const update = await User.updateOne({username: req.body.username}, {img: path});
-  if(!update.modifiedCount) return res.status(304).send('user not updated');
-  res.send({message: 'profile image uploaded'});
-
-})
 
 // Error Handling
 app.use(errorController.routeError);
@@ -70,6 +60,3 @@ app.use(errorController.errorHandler);
 // Server End
 const port = process.env.PORT || 3003;
 app.listen(port, () => console.log(`listening on PORT: ${port}`));
-
-
-
