@@ -2,33 +2,34 @@ const router = require('express').Router();
 const passport = require('passport');
 
 
-const loginController = require('../controller/loginController.js');
+const authController = require('../controller/authController.js');
 require('../common/passport.js');
 
 
 
-
-router.get('/logout', auth.isLoggedIn, loginController.logoutUser);
-router.post('/signup', auth.isLoggedOut, loginController.signupUser);
+// LOGOUT
+router.get('/logout', auth.isLoggedIn, authController.logoutUser);
 
 
 // Google
 router.get('/google', auth.isLoggedOut, passport.authenticate('google', {scope: ['profile', 'email']}));
 
 
-// GITHUB
+// GitHub
 router.get('/github', auth.isLoggedOut, passport.authenticate('github'));
 
 
 // CALLBACK
-router.get('/callback', loginController.passportCallback);
+router.get('/callback', authController.passportCallback);
 
 
 // DISCORD?!
 
+
 // EMail / Token
-// router.post('/', loginController.loginRequest);
-// router.get('/:tid', loginController.verifyToken);
+router.route('/email')
+  .get(auth.isLoggedOut, (req)=>console.log(req.query), passport.authenticate('token'))
+  .post(auth.isLoggedOut, authController.loginRequest);
 
 
 // EXPORT
