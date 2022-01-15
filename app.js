@@ -47,8 +47,8 @@ app.use(passport.session());
 // Routes
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
-app.get('/rankings', ()=>{});
-app.get('/statistics', ()=>{});
+app.get('/ranks', ()=>{});
+app.get('/stats', ()=>{});
 app.post('/feedback', feedbackController);
 
 
