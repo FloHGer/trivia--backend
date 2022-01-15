@@ -28,8 +28,8 @@ router.get('/callback', authController.passportCallback);
 
 // EMail / Token
 router.route('/email')
-  .get(auth.isLoggedOut, (req)=>console.log(req.query), passport.authenticate('token'))
-  .post(auth.isLoggedOut, authController.loginRequest);
+  .post(auth.isLoggedOut, authController.loginRequest)
+  .get(auth.isLoggedOut, (req)=>console.log(req.query), passport.authenticate('token'));
 
 
 // EXPORT

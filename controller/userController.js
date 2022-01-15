@@ -68,7 +68,7 @@ module.exports = userController = {
         user: user._id,
         datePlayed: Date.now(),
         score: req.body.score,
-        categories: req.body.categories, // needs to be an object of objects
+        categories: req.body.categories,
         // options: req.body.options, // needs to be an array
       });
 

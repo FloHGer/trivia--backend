@@ -20,7 +20,8 @@ const user = new Schema({
     maxCompletedCategories: {type: Number},
     categories: [{
       name: {type: String},
-      count: {type: Number},
+      countTotal: {type: Number},
+      countCompleted: {type: Number},
       totalAnswers: {type: Number},
       correctAnswers: {type: Number},
     }],
@@ -39,7 +40,6 @@ const user = new Schema({
     // setting1: state
     // setting2: state
   },
-  // ranking: ???,
 })
 
 module.exports = model('User', user);
