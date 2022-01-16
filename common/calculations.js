@@ -1,5 +1,6 @@
 const User = require('../schemas/userSchema.js');
 const Stat = require('../schemas/statSchema.js');
+const Ranking = require('../schemas/rankingSchema.js');
 
 module.exports = calculate = {
 // PERSONAL STATS
@@ -13,6 +14,7 @@ module.exports = calculate = {
           .reduce((sum, answer) => (answer ? ++sum : sum), 0), 0);
       const completedCategories = game.categories
         .reduce((sum, category) => (category.answers[4] ? ++sum : sum), 0);
+
       const updateUser = await User.updateOne(
         {username: req.params.username},
         {
@@ -162,10 +164,34 @@ module.exports = calculate = {
       };
 
       const update = await User.updateOne({username: req.params.username}, {achievs});
-      if(!update.modifiedCount) return res.status(204).send('user not updated!');
-      return res.send({message: 'game posted', payload: {game: res.game, newAchievs}});
+      if(!update.matchedCount) return res.status(204).send({message: 'user not found'});
+
+      res.newAchievs = newAchievs;
+
+      nxt();
     }catch(err){nxt(err)}
-  }
+  },
+
+
+  ranks: async (req, res, nxt) => {
+    try{
+      const ranking = await User.aggregate([
+        {$project: {_id: 0, username: 1, stats: {score: {high: 1}}}},
+        {$sort: {'stats.score.high': -1}}
+      ]);
+      if(!ranking) return res.status(204).send({message: 'aggregation failed'});
+
+      ranking.map((user, i) => ranking[i] = {username: user.username, value: user.stats.score.high});
+
+      const update = await Ranking.updateOne({name: 'highscore'},
+        {list: ranking},
+        {upsert: true},
+      );
+      if(!update.modifiedCount && !update.upsertedCount) return res.status(204).send({message: 'ranking not found'});
+
+      return res.send({message: 'game posted', payload: {game: res.game, achievs: res.newAchievs}});
+    }catch(err){nxt(err)}
+  },
 }
 
 
