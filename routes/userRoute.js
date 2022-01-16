@@ -21,7 +21,7 @@ router.get('/:username/stats', userController.getStats);
 
 router.get('/:username/ranks', userController.getRanks);
 
-router.get('/:username/achiev', userController.getAchievs);
+router.get('/:username/achievs', userController.getAchievs);
 
 router.post('/:username/upload', userController.upload);
 

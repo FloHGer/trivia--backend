@@ -84,31 +84,29 @@ module.exports = userController = {
     console.log('GET on /user/:username/stats');
     try {
       const stats = await User.findOne({username: req.params.username}, '-_id stats');
-      if(!stats) return res.status(204).send({message: 'PlayerStats not found'});
+      if(!stats) return res.status(204).send({message: 'Player Stats not found'});
+
       return res.send({message: 'success', payload: stats});
-    } catch (err) {
-      nxt(err);
-    }
+    } catch (err) {nxt(err)}
   },
 
   getRanks: async (req, res, nxt) => {
     console.log('GET on /user/:username/ranks');
     try {
       const ranks = await Ranks.findOne();
-      if(!ranks) return res.status(204).send({message: 'Playerranks not found'});
+      if(!ranks) return res.status(204).send({message: 'Player Ranks not found'});
       return res.send({message: 'success', payload: ranks});
-    } catch (err) {
-      nxt(err);
-    }
+    } catch (err) {nxt(err)}
   },
 
   getAchievs: async (req, res, nxt) => {
     console.log('GET on /user/:username/achieves');
     try {
-      const achievement = await Achievement.findOne();
-    } catch (err) {
-      nxt(err);
-    }
+      const achievs = await User.findOne({username: req.params.username}, '-_id achievs');
+      if(!achievs) return res.status(204).send({message: 'Player Achievements not found'});
+
+      return res.send({message: 'success', payload: achievs});
+    }catch(err) {nxt(err)}
   },
 
   upload: async (req, res, nxt) => {
