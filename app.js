@@ -9,7 +9,7 @@ const auth = require('./common/auth.js');
 const authRouter = require('./routes/authRoute.js');
 const userRouter = require('./routes/userRoute.js');
 const {errorController} = require('./errors/errorController.js');
-const feedbackController = require('./controller/feedbackController.js');
+const generalController = require('./controller/generalController.js');
 
 
 // Server Start
@@ -47,9 +47,9 @@ app.use(passport.session());
 // Routes
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
-app.get('/ranks', ()=>{});
-app.get('/stats', ()=>{});
-app.post('/feedback', feedbackController);
+app.get('/stats', generalController.stats);
+app.get('/ranks', generalController.ranks);
+app.post('/feedback', generalController.feedback);
 
 
 // Error Handling

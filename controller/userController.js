@@ -1,7 +1,7 @@
 const {HttpError} = require('../errors/errorController.js');
-const User = require('../schemas/userSchema');
-const Game = require('../schemas/gameSchema');
-const UserStats = require('../schemas/userStatsSchema');
+const User = require('../schemas/userSchema.js');
+const Game = require('../schemas/gameSchema.js');
+const calculate = require('../common/calculations.js');
 
 module.exports = userController = {
   getUser: async (req, res, nxt) => {
@@ -64,91 +64,29 @@ module.exports = userController = {
     console.log('POST on /user/:username/games');
     try {
       const user = await User.findOne({username: req.params.username});
+      if(!user) res.status(204).send({message: 'user not created'});
       const game = await Game.create({
         user: user._id,
         datePlayed: Date.now(),
         score: req.body.score,
         categories: req.body.categories,
-        // options: req.body.options, // needs to be an array
       });
+      if(!game) res.status(204).send({message: 'game not created'});
 
-      // CALCULATIONS
-      const totalAnswers = game.categories
-        .reduce((sum, category) => sum + category.answers.length, 0);
-      const correctAnswers = game.categories
-        .reduce((sum, category) => sum + category.answers
-          .reduce((sum, answer) => (answer ? ++sum : sum), 0), 0);
-      const completedCategories = game.categories
-        .reduce((sum, category) => (category.answers[4] ? ++sum : sum), 0);
+      res.game = game;
 
-      const [names] = game.categories.map(category => category.name)
-      
-      // USER update
-      const update = await User.updateOne(
-        {username: req.params.username},
-        {
-          $push: {games: game._id},
-          $inc: {
-            'stats.gamesPlayed': 1,
-            'stats.totalAnswers': totalAnswers,
-            'stats.correctAnswers': correctAnswers,
-            'stats.totalScore': game.score,
-            'stats.totalCompletedCategories': completedCategories,
-            // `stats.categories.${names[0]}.count`: 1,
-            // `stats.categories.${names[1]}.count`: 1,
-            // `stats.categories.${names[2]}.count`: 1,
-            // `stats.categories.${names[3]}.count`: 1,
-            // `stats.categories.${names[4]}.count`: 1,
-            // `stats.categories.${names[5]}.count`: 1,
-          },
-          $max: {
-            'stats.highScore': game.score,
-            'stats.maxCompletedCategories': completedCategories,
-          },
-        }
-      );
+      nxt();
+    } catch (err) {
+      nxt(err);
+    }
+  },
 
-        // stats.categories.names[0].totalAnswers += game.category.answers.length[0]
-        // stats.categories.names[1].totalAnswers += game.category.answers.length[1]
-        // stats.categories.names[2].totalAnswers += game.category.answers.length[2]
-        // stats.categories.names[3].totalAnswers += game.category.answers.length[3]
-        // stats.categories.names[4].totalAnswers += game.category.answers.length[4]
-        // stats.categories.names[5].totalAnswers += game.category.answers.length[5]
-        // stats.categories.names[0].correctAnswers += correctAnswers[0]
-        // stats.categories.names[1].correctAnswers += correctAnswers[1]
-        // stats.categories.names[2].correctAnswers += correctAnswers[2]
-        // stats.categories.names[3].correctAnswers += correctAnswers[3]
-        // stats.categories.names[4].correctAnswers += correctAnswers[4]
-        // stats.categories.names[5].correctAnswers += correctAnswers[5]
-        // stats.categories.names[0].correctAnswers += correctAnswers[0]
-        // stats.categories.names[1].correctAnswers += correctAnswers[1]
-        // stats.categories.names[2].correctAnswers += correctAnswers[2]
-        // stats.categories.names[3].correctAnswers += correctAnswers[3]
-        // stats.categories.names[4].correctAnswers += correctAnswers[4]
-        // stats.categories.names[5].correctAnswers += correctAnswers[5]
-
-// GLOBAL STATS
-        // const globalStats = async() => {
-
-        //   await Stats.update({},
-        //     {
-        //       'gamesPlayed':
-        //       'score.total':
-        //       'score.high':
-        //       'categories.name.games':
-        //       'categories.name.completed':
-        //       'categories.name.answersTotal':
-        //       'categories.name.answersCorrect':
-
-        //     }
-        //   )
-        // }
-
-
-//ACHIEVEMENTS
-
-      if(!update) return res.send('no')
-      res.send({message: 'game posted'});
+  getStats: async (req, res, nxt) => {
+    console.log('GET on /user/:username/stats');
+    try {
+      const stats = await User.findOne({username: req.params.username}, '-_id stats');
+      if(!stats) return res.status(204).send({message: 'PlayerStats not found'});
+      return res.send({message: 'success', payload: stats});
     } catch (err) {
       nxt(err);
     }
@@ -157,22 +95,15 @@ module.exports = userController = {
   getRanks: async (req, res, nxt) => {
     console.log('GET on /user/:username/ranks');
     try {
-      const ranking = await Ranking.findOne();
+      const ranks = await Ranks.findOne();
+      if(!ranks) return res.status(204).send({message: 'Playerranks not found'});
+      return res.send({message: 'success', payload: ranks});
     } catch (err) {
       nxt(err);
     }
   },
 
-  getStatistics: async (req, res, nxt) => {
-    console.log('GET on /user/:username/stats');
-    try {
-      const stats = await Stats.findOne();
-    } catch (err) {
-      nxt(err);
-    }
-  },
-
-  getAchievements: async (req, res, nxt) => {
+  getAchievs: async (req, res, nxt) => {
     console.log('GET on /user/:username/achieves');
     try {
       const achievement = await Achievement.findOne();

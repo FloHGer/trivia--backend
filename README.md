@@ -33,9 +33,9 @@ https://app.creately.com/diagram/NlH88ez9Ror/edit
 
     - GET
 
-  	- PATCH
+	- PATCH
 		{ // available options:
-			username: String,
+  			username: String,
 			email: String,
 			dob: Date,
 			nat: String,
@@ -44,59 +44,60 @@ https://app.creately.com/diagram/NlH88ez9Ror/edit
 				joker: Boolean,
 				timer: Boolean,
 			},
-		}
+  		}
 
-    - DELETE
+- DELETE
 
 #### /user/:username/games
 
     - GET
 
     - POST
-		{
-			score: Number,
-			categories:
-				{ // 6x !!!
-					name: String,
-					answers: [Boolean], // 1-5x
-				},
-		}
+    	{
+    		score: Number,
+    		categories: { // 6x
+    			name: String,
+    			answers: [Boolean], // 1-5x
+    		},
+    	}
 
 #### /user/:username/upload
 
     - POST
       	{pngFile} // profile image
 
-#### /user/:username/ranks
-
-    - GET
-        [under construction]
-
 #### /user/:username/stats
 
     - GET
         [under construction]
 
-#### /user/:username/achiev
+#### /user/:username/ranks
 
     - GET
+      	[under construction]
 
+
+#### /user/:username/achievs
+
+    - GET
+				[under construction]
 ---
 
 ## others:
-
-### /ranks
-
-    - GET
 
 ### /stats
 
     - GET
 
+### /ranks
+
+    - GET
+				[under construction]
+
 ### /feedback
 
     - POST
-		{
-			value: Number, // 1-5
-			message: String,
-		}
+    	{
+    		value: Number, // 1-5
+    		message: String,
+    	}
