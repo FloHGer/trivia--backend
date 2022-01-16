@@ -14,6 +14,7 @@ router.route('/:username/games')
     userController.postGame,
     calculate.stats,
     calculate.achievs,
+    calculate.ranks,
   );
 
 router.get('/:username/stats', userController.getStats);

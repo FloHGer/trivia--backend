@@ -11,14 +11,20 @@ const user = new Schema({
   nat: {type: String},
   img: {type: String},
   stats: {
-    'gamesPlayed': {type: Number},
-    'answers.total': {type: Number},
-    'answers.correct': {type: Number},
-    'score.total': {type: Number},
-    'score.high': {type: Number},
-    'completedCategories.total': {type: Number},
-    'completedCategories.max': {type: Number},
-    'categories': [{
+    gamesPlayed: {type: Number},
+    answers: {
+      total: {type: Number},
+      correct: {type: Number},
+    },
+    score: {
+      total: {type: Number},
+      high: {type: Number},
+    },
+    completedCategories: {
+      total: {type: Number},
+      max: {type: Number},
+    },
+    categories: [{
       name: {type: String},
       countTotal: {type: Number},
       countCompleted: {type: Number},

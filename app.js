@@ -8,6 +8,7 @@ require('dotenv').config();
 const auth = require('./common/auth.js');
 const authRouter = require('./routes/authRoute.js');
 const userRouter = require('./routes/userRoute.js');
+const rankingRouter = require('./routes/rankingRoute.js');
 const {errorController} = require('./errors/errorController.js');
 const generalController = require('./controller/generalController.js');
 
@@ -48,7 +49,7 @@ app.use(passport.session());
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.get('/stats', generalController.stats);
-app.get('/ranks', generalController.ranks);
+app.use('/ranks', rankingRouter);
 app.post('/feedback', generalController.feedback);
 
 

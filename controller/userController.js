@@ -1,7 +1,6 @@
 const {HttpError} = require('../errors/errorController.js');
 const User = require('../schemas/userSchema.js');
 const Game = require('../schemas/gameSchema.js');
-const calculate = require('../common/calculations.js');
 
 module.exports = userController = {
   getUser: async (req, res, nxt) => {

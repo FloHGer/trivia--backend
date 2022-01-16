@@ -10,11 +10,6 @@ module.exports = generalController = {
     }catch(err){nxt(err)}
   },
 
-  ranks:  async(req, res, nxt) => {
-    const ranks = await Ranks.findOne();
-    if(!ranks) res.status(204).send({message :'ranks not found'});
-    res.send({message: 'success', payload: ranks});
-  },
 
   feedback:  async(req, res, nxt) => {
     // await Feedback.create();
