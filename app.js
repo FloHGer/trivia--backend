@@ -3,6 +3,7 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const fileUpload = require('express-fileupload');
+const cors = require('cors');
 require('dotenv').config();
 
 const auth = require('./common/auth.js');
@@ -30,6 +31,7 @@ mongoose.connection
 
 
 // Middleware
+app.use(cors());
 app.use(fileUpload({
   createParentPath: true,
 }));
