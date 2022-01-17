@@ -8,6 +8,10 @@ https://app.creately.com/diagram/NlH88ez9Ror/edit
 
 ## auth:
 
+#### /auth/logout
+
+    - GET
+
 #### /auth/google
 
     - GET
@@ -21,66 +25,55 @@ https://app.creately.com/diagram/NlH88ez9Ror/edit
     - POST
         {email: String}
 
-#### /auth/logout
-
-    - GET
-
 ---
 
 ## user:
 
 #### /user/:username
 
-    - GET
+	- GET
 
 	- PATCH
-		{ // available options:
-  			username: String,
-			email: String,
-			dob: Date,
-			nat: String,
-			img: String,
-			options: {
-				joker: Boolean,
-				timer: Boolean,
-			},
-  		}
+        { // available options:
+    	username: String,
+    	email: String,
+    	dob: Date,
+    	nat: String,
+    	img: String,
+    	options: {
+    	    joker: Boolean,
+    	    timer: Boolean,
+    	},
+        }
 
-- DELETE
+	- DELETE
 
 #### /user/:username/games
 
     - GET
 
     - POST
-    	{
-    		score: Number,
-    		categories: { // 6x
-    			name: String,
-    			answers: [Boolean], // 1-5x
-    		},
-    	}
-
-#### /user/:username/upload
-
-    - POST
-      	{pngFile} // profile image
+        {
+    	score: Number,
+    	categories: { // 6x
+    	    name: String,
+    	    answers: [Boolean], // 1-5x
+    	},
+        }
 
 #### /user/:username/stats
 
     - GET
-        [under construction]
-
-#### /user/:username/ranks
-
-    - GET
-      	[under construction]
-
 
 #### /user/:username/achievs
 
     - GET
-				[under construction]
+
+#### /user/:username/upload
+
+    - POST
+        {pngFile} // profile image
+
 ---
 
 ## others:
@@ -91,13 +84,12 @@ https://app.creately.com/diagram/NlH88ez9Ror/edit
 
 ### /ranks
 
-    - GET
-				[under construction]
+	- GET
 
 ### /feedback
 
-    - POST
-    	{
-    		value: Number, // 1-5
-    		message: String,
-    	}
+	- POST
+        {
+		value: Number, // 1-5
+		message: String,
+	    }
