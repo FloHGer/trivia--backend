@@ -1,4 +1,5 @@
 const {HttpError} = require('../errors/errorController.js');
+const fs = require('fs');
 const User = require('../schemas/userSchema.js');
 const Game = require('../schemas/gameSchema.js');
 
@@ -25,9 +26,10 @@ module.exports = userController = {
         return res.status(204).send({message: 'user not found'});
       if (!user.modifiedCount && user.matchedCount)
         return res.status(304).send({message: 'Not modified'});
-      if (user.modifiedCount) {
-        return res.status(201).send({message: 'user successfully updated'});
-      }
+      if (user.modifiedCount)
+      if (req.body.updates.username)
+        fs.rename(`./uploads/profileImages/${req.body.updates.username}.png`, `./uploads/profileImages/${req.params.username}.png`)
+      return res.status(201).send({message: 'user successfully updated'});
     } catch (err) {
       nxt(err);
     }
@@ -39,6 +41,8 @@ module.exports = userController = {
       const user = await User.deleteOne({username: req.params.username});
       if (!user.deletedCount)
         return res.status(204).send({message: 'user not deleted.'});
+      const deletion = fs.unlink(`./uploads/profileImages/${req.params.username}.png`);
+      if(!deletion) return res.status(204).send({message: 'profile picture not deleted'});
       return res.send({message: 'user deleted'});
     } catch (err) {
       nxt(err);
@@ -109,18 +113,17 @@ module.exports = userController = {
     }catch(err) {nxt(err)}
   },
 
-  upload: async (req, res, nxt) => {
+  upload: (req, res, nxt) => {
     console.log('POST on /user/:username/achieves');
     // works with 'multipart/form-data'
-    // if (!req.files) return res.status(204).send('no file uploaded');
-    // const userImg = req.files.userImg;
-    // const path = `./uploads/images/${userImg.name}`;
-    // userImg.mv(path);
-    // const update = await User.updateOne(
-    //   {username: req.body.username},
-    //   {img: path}
-    // );
-    // if (!update.modifiedCount) return res.status(304).send('user not updated');
-    // res.send({message: 'profile image uploaded'});
+    if (!req.files) return res.status(204).send({message: 'no file uploaded'});
+    if (req.files.userImg.size > 20 * 1024 * 1024) return res.status(204).send({message: 'file too big'});
+
+    const userImg = req.files.userImg;
+    userImg.name = `${req.params.username}.png`;
+    const path = `./uploads/profileImages/${userImg.name}`;
+    userImg.mv(path);
+
+    res.send({message: 'profile image uploaded'});
   },
 };

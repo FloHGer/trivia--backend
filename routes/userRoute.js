@@ -4,7 +4,6 @@ const userController = require('../controller/userController.js');
 const statCalc = require('../common/calculations/statCalc.js');
 const achievCalc = require('../common/calculations/achievCalc.js');
 const rankCalc = require('../common/calculations/rankCalc.js');
-const calculate = require('../common/calculations.js');
 
 router.route('/:username')
   .get(userController.getUser)

@@ -34,10 +34,13 @@ module.exports = authController = {
 
       // send mail with token for login
       const status = await sendMail({
+        purpose: 'login',
         recipient: DBUser.email,
         subject: 'TRIVIA Game - LogIn requested',
-        username: DBUser.username !== DBUser.email ? DBUser.username : 'new user',
-        link: `http://${req.headers.host}/auth/email/?token=${token}`, // change to https later
+        body: {
+          username: DBUser.username !== DBUser.email ? DBUser.username : 'new user',
+          link: `http://${req.headers.host}/auth/email/?token=${token}`, // change to https later
+        },
       });
       if(status) return res.send(status);
     } catch (err) {nxt(err);}

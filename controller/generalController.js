@@ -1,5 +1,7 @@
 const Stat = require('../schemas/statSchema.js');
 const Feedback = require('../schemas/feedbackSchema.js');
+const sendMail = require('../common/nodemailer.js');
+
 
 module.exports = generalController = {
   stats:  async(req, res, nxt) => {
@@ -18,6 +20,17 @@ module.exports = generalController = {
       message: req.body.feedback.message,
     });
     if(!feedback) return res.status(204).send({message: 'feedback not created'});
+
+    sendMail({
+      purpose: 'feedback',
+      recipient: 'mail@florianhoehle.de', // change to a triva-ga.me address later
+      subject: 'TRIVIA Game - feedback',
+      body: {
+        value: feedback.value,
+        message: feedback.message,
+      },
+    });
+    
     res.send({message: 'success', payload: feedback});
   },
 }
