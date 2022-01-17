@@ -2,7 +2,7 @@
 const {Schema, model} = require('mongoose');
 
 
-const user = new Schema({
+const userSchema = new Schema({
   provider: {type: String, required: true},
   username: {type: String, unique: true, required: true},
   email: {type: String, unique: true},
@@ -11,18 +11,18 @@ const user = new Schema({
   nat: {type: String},
   img: {type: String},
   stats: {
-    gamesPlayed: {type: Number},
+    gamesPlayed: {type: Number, default: 0},
     answers: {
-      total: {type: Number},
-      correct: {type: Number},
+      total: {type: Number, default: 0},
+      correct: {type: Number, default: 0},
     },
     score: {
-      total: {type: Number},
-      high: {type: Number},
+      total: {type: Number, default: 0},
+      high: {type: Number, default: 0},
     },
     completedCategories: {
-      total: {type: Number},
-      max: {type: Number},
+      total: {type: Number, default: 0},
+      max: {type: Number, default: 0},
     },
     categories: [{
       name: {type: String},
@@ -49,4 +49,4 @@ const user = new Schema({
   },
 })
 
-module.exports = model('User', user);
+module.exports = model('User', userSchema);

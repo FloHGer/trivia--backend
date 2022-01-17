@@ -1,6 +1,9 @@
 const router = require('express').Router();
 
 const userController = require('../controller/userController.js');
+const statCalc = require('../common/calculations/statCalc.js');
+const achievCalc = require('../common/calculations/achievCalc.js');
+const rankCalc = require('../common/calculations/rankCalc.js');
 const calculate = require('../common/calculations.js');
 
 router.route('/:username')
@@ -12,9 +15,9 @@ router.route('/:username/games')
   .get(userController.getGames)
   .post(
     userController.postGame,
-    calculate.stats,
-    calculate.achievs,
-    calculate.ranks,
+    statCalc,
+    achievCalc,
+    rankCalc,
   );
 
 router.get('/:username/stats', userController.getStats);

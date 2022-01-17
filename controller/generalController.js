@@ -1,4 +1,5 @@
 const Stat = require('../schemas/statSchema.js');
+const Feedback = require('../schemas/feedbackSchema.js');
 
 module.exports = generalController = {
   stats:  async(req, res, nxt) => {
@@ -11,7 +12,12 @@ module.exports = generalController = {
   },
 
 
-  feedback:  async(req, res, nxt) => {
-    // await Feedback.create();
+  feedback: async(req, res, nxt) => {
+    const feedback = await Feedback.create({
+      value: req.body.feedback.value,
+      message: req.body.feedback.message,
+    });
+    if(!feedback) return res.status(204).send({message: 'feedback not created'});
+    res.send({message: 'success', payload: feedback});
   },
 }
