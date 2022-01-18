@@ -155,7 +155,7 @@ https://app.creately.com/diagram/NlH88ez9Ror/edit
     				},
 					gamesPlayed: Number,
 					categories: [] // under construction
-  		}
+				}
 		}
 
 #### /user/:username/achievs

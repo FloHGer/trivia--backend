@@ -38,7 +38,9 @@ mongoose.connection
 // })
 
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: 'https://localhost:3000',
+  methods: '*',
+  header: '*'
 }));
 app.use(fileUpload({
   createParentPath: true,
