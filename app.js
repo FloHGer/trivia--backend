@@ -36,12 +36,12 @@ mongoose.connection
 //   res.header('Access-Control-Allow-Headers', "Origin, x-Requested-With, Content-Type, Accept" );
 //   nxt()
 // })
-
-app.use(cors({
-  origin: 'https://localhost:3000',
-  methods: '*',
-  header: '*'
-}));
+app.use(cors());
+// app.use(cors({
+//   origin: 'https://localhost:3000',
+//   methods: '*',
+//   header: '*'
+// }));
 app.use(fileUpload({
   createParentPath: true,
 }));
