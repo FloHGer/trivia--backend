@@ -8,19 +8,19 @@ require('../common/passport.js');
 
 
 // LOGOUT
-router.get('/logout', auth.isLoggedIn, authController.logoutUser);
+router.get('/logout', authController.logoutUser);
 
 
 // Google
-router.get('/google', auth.isLoggedOut, passport.authenticate('google', {scope: ['profile', 'email']}));
+router.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}));
 
 
 // GitHub
-router.get('/github', auth.isLoggedOut, passport.authenticate('github'));
+router.get('/github', passport.authenticate('github'));
 
 
 // CALLBACK
-router.get('/callback', authController.passportCallback);
+router.get('/callback', authController.passportCallback, authController.test);
 
 
 // DISCORD?!
@@ -28,8 +28,8 @@ router.get('/callback', authController.passportCallback);
 
 // EMail / Token
 router.route('/email')
-  .post(auth.isLoggedOut, authController.loginRequest)
-  .get(auth.isLoggedOut, (req)=>console.log(req.query), passport.authenticate('token'));
+  .post(authController.loginRequest)
+  .get((req)=>console.log(req.query), passport.authenticate('token'));
 
 
 // EXPORT

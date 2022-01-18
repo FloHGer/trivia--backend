@@ -21,10 +21,12 @@ router.route('/:username/games')
 
 router.get('/:username/stats', userController.getStats);
 
-router.get('/:username/ranks', userController.getRanks);
+// router.get('/:username/ranks', userController.getRanks);
 
 router.get('/:username/achievs', userController.getAchievs);
 
-router.post('/:username/upload', userController.upload);
+router.route('/:username/upload')
+  .get(userController.deleteUpload)
+  .post(userController.upload);
 
 module.exports = router;

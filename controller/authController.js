@@ -61,6 +61,9 @@ module.exports = authController = {
   //   }catch(err){nxt(err)}
   // },
 
+  test: async(req, res, nxt) => {
+    console.log('message')
+  },
 
   passportCallback: passport.authenticate(['google', 'github'], {
     successRedirect: '/dashboard',

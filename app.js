@@ -29,9 +29,17 @@ mongoose.connection
     console.log('DB connected!');
   });
 
-
 // Middleware
-app.use(cors());
+// app.use((req, res, nxt) => {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Methods', '*');
+//   res.header('Access-Control-Allow-Headers', "Origin, x-Requested-With, Content-Type, Accept" );
+//   nxt()
+// })
+
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 app.use(fileUpload({
   createParentPath: true,
 }));
@@ -41,7 +49,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   cookie: {},
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: false, // brauchen wir das?
 }));
 app.use(passport.initialize());
 app.use(passport.session());
