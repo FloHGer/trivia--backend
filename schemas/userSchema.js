@@ -33,13 +33,37 @@ const userSchema = new Schema({
     }],
   },
   achievs: {
-    gamesPlayed: [{type: Date}],
-    correctAnswers: [{type: Date}],
-    highScore: [{type: Date}],
-    totalScore: [{type: Date}],
-    completedCategoriesMax: [{type: Date}],
-    completedCategoriesTotal: [{type: Date}],
-    all: {type: Boolean},
+    gamesPlayed: {
+      unlocked: [{type: Date}],
+      next: {type: Number},
+    },
+    correctAnswers: {
+      unlocked: [{type: Date}],
+      next: {type: Number},
+    },
+    score: {
+      total: {
+        unlocked: [{type: Date}],
+        next: {type: Number},
+      },
+      high: {
+        unlocked: [{type: Date}],
+        next: {type: Number},
+      },
+    },
+    completedCategories: {
+      total: {
+        unlocked: [{type: Date}],
+        next: {type: Number},
+      },
+      max: {
+        unlocked: [{type: Date}],
+        next: {type: Number},
+      },
+    },
+    all: {
+      unlocked: {type: Date},
+    },
   },
   games: [{type: Schema.Types.ObjectId, ref: 'Game'}],
   token: {type: String},

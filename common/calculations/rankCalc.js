@@ -10,8 +10,7 @@ module.exports = async (req, res, nxt) => {
       {$sort: {'stats.score.high': -1}}
     ]);
     if(!highScoreRanking) return res.status(204).send({message: 'aggregation failed'});
-    highScoreRanking.map((user, i) =>
-      highScoreRanking[i] = {username: user.username, value: user.stats.score.high});
+    highScoreRanking.map((user, i) => {console.log('asd',user); highScoreRanking[i] = {username: user.username, value: user.stats.score.high}});
 
     const highScoreUpdate = await Ranking.updateOne({name: 'highscore'},
       {list: highScoreRanking},

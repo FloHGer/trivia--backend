@@ -95,7 +95,6 @@ module.exports = userController = {
       if (!game) res.status(204).send({message: "game not created"});
 
       res.game = game;
-
       nxt();
     } catch (err) {
       nxt(err);

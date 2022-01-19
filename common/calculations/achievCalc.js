@@ -18,52 +18,70 @@ module.exports = async(req, res, nxt) => {
 
     for(let i = 0; i < 3; i++) {
       if(stats.gamesPlayed === achievValues.gamesPlayed[i]) {
-        achievs.gamesPlayed.push(Date.now());
+        achievs.gamesPlayed.unlocked.push(Date.now());
         newAchievs.push(`${achievValues.gamesPlayed[i]} Games played!`);
       };
+      if(achievs.gamesPlayed.unlocked.length < 3 
+      && achievs.gamesPlayed.unlocked.length === i)
+        achievs.gamesPlayed.next = achievValues.gamesPlayed[i] - stats.gamesPlayed;
 
       if(stats.answers.correct >= achievValues.correctAnswers[i]
-      && achievs.correctAnswers.length === i) {
-        achievs.correctAnswers.push(Date.now());
+      && achievs.correctAnswers.unlocked.length === i) {
+        achievs.correctAnswers.unlocked.push(Date.now());
         newAchievs.push(`${achievValues.correctAnswers[i]} correct answers!`);
       };
+      if(achievs.correctAnswers.unlocked.length < 3 
+      && achievs.correctAnswers.unlocked.length === i)
+        achievs.correctAnswers.next = achievValues.correctAnswers[i] - stats.answers.correct;
 
       if(stats.score.high >= achievValues.highScore[i]
-      && achievs.highScore.length === i) {
-        achievs.highScore.push(Date.now());
+      && achievs.score.high.unlocked.length === i) {
+        achievs.score.high.unlocked.push(Date.now());
         newAchievs.push(`HIGHSCORE of ${achievValues.highScore[i]}!`);
       };
+      if(achievs.score.high.unlocked.length < 3 
+      && achievs.score.high.unlocked.length === i)
+        achievs.score.high.next = achievValues.highScore[i] - stats.score.high;
 
       if(stats.score.total >= achievValues.totalScore[i]
-      && achievs.totalScore.length === i) {
-        achievs.totalScore.push(Date.now());
+      && achievs.score.total.unlocked.length === i) {
+        achievs.score.total.unlocked.push(Date.now());
         newAchievs.push(`Total score of ${achievValues.totalScore[i]}!`);
       };
+      if(achievs.score.total.unlocked.length < 3 
+      && achievs.score.total.unlocked.length === i)
+        achievs.score.total.next = achievValues.totalScore[i] - stats.score.total;
 
       if(stats.completedCategories.total >= achievValues.completedCategoriesTotal[i]
-      && achievs.completedCategoriesTotal.length === i) {
-        achievs.completedCategoriesTotal.push(Date.now());
+      && achievs.completedCategories.total.unlocked.length === i) {
+        achievs.completedCategories.total.unlocked.push(Date.now());
         newAchievs.push(`${achievValues.completedCategoriesTotal[i]} completed categories!`);
       };
+      if(achievs.completedCategories.total.unlocked.length < 3 
+      && achievs.completedCategories.total.unlocked.length === i)
+        achievs.completedCategories.total.next = achievValues.completedCategoriesTotal[i] - stats.completedCategories.total;
     };
 
     for(let i = 0; i < 6; i++){
       if(stats.completedCategories.max >= i + 1
-      && achievs.completedCategoriesMax.length === i) {
-        achievs.completedCategoriesMax.push(Date.now());
+      && achievs.completedCategories.max.unlocked.length === i) {
+        achievs.completedCategories.max.unlocked.push(Date.now());
         newAchievs.push(`${achievValues.completedCategoriesMax[i]} ${i === 0 ? 'category' : 'categories'} completed in one game!`);
       };
+      if(achievs.completedCategories.max.unlocked.length < 6 
+        && achievs.completedCategories.max.unlocked.length === i)
+      achievs.completedCategories.max.next = achievValues.completedCategoriesMax[i] - stats.completedCategories.max;
     };
 
     if(achievs.all === false
-      && achievs.gamesPlayed.length === 3
-      && achievs.correctAnswers.length === 3
-      && achievs.highScore.length === 3
-      && achievs.totalScore.length === 3
-      && achievs.completedCategoriesMax.length === 6
-      && achievs.completedCategoriesTotal.length === 3
+      && achievs.gamesPlayed.unlocked.length === 3
+      && achievs.correctAnswers.unlocked.length === 3
+      && achievs.score.high.unlocked.length === 3
+      && achievs.score.total.unlocked.length === 3
+      && achievs.completedCategories.max.unlocked.length === 6
+      && achievs.completedCategories.total.unlocked.length === 3
     ){
-      achievs.all = true;
+      achievs.all.unlocked = Date.now();
       newAchievs.push('ALL Achievements!');
     };
 
