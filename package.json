@@ -1,7 +1,10 @@
 {
   "name": "trivia--backend",
   "version": "1.0.0",
-  "engines" : { "node" : ">=0.16" },
+  "engines" : { 
+    "node" : ">=0.16",
+    "npm" : "8.x"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {
