@@ -64,6 +64,7 @@ app.use('/user', userRouter);
 app.get('/stats', generalController.stats);
 app.use('/ranks', rankingRouter);
 app.post('/feedback', generalController.feedback);
+app.get('/flags', generalController.getFlags)
 
 
 // Error Handling

@@ -27,6 +27,7 @@ module.exports = userController = {
         return res.status(204).send({message: "user not found"});
       if (!update.modifiedCount && update.matchedCount)
         return res.status(304).send({message: "Not modified"});
+
       if (req.body.updates.username) {
         if (
           !fs.existsSync(`./uploads/profileImages/${req.params.username}.png`)
@@ -39,6 +40,7 @@ module.exports = userController = {
           err => (err ? console.log(err) : null)
         );
       }
+
       return res.status(201).send({message: "user successfully updated"});
     } catch (err) {
       nxt(err);
@@ -149,7 +151,6 @@ module.exports = userController = {
 
   upload: (req, res, nxt) => {
     console.log("POST on /user/:username/upload");
-    // works with 'multipart/form-data'
     if (!req.files) return res.status(204).send({message: "no file uploaded"});
     console.log(req.files);
     if (req.files.userImg.size > 20 * 1024 * 1024)
@@ -173,4 +174,6 @@ module.exports = userController = {
     );
     res.send({message: "Profile image deleted"});
   },
+
+
 };
