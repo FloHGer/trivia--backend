@@ -165,12 +165,42 @@ https://app.creately.com/diagram/NlH88ez9Ror/edit
 			message: String,
 			payload:
 				{
-					gamesPlayed: [Date],
-					correctAnswers: [Date],
-					highScore: [Date],
-					totalScore: [Date],
-					completedCategoriesMax: [Date],
-					completedCategoriesTotal: [Date],
+					gamesPlayed:
+						{
+							unlocked: [Date],
+							next: Number,
+						},
+					correctAnswers:
+						{
+							unlocked: [Date],
+							next: Number,
+						},
+					score:
+						{
+							high:
+								{
+									unlocked: [Date],
+									next: Number,
+								},
+							total:
+								{
+									unlocked: [Date],
+									next: Number,
+								},
+						},
+					completedCategories:
+						{
+							max:
+								{
+									unlocked: [Date],
+									next: Number,
+								},
+							total:
+								{
+									unlocked: [Date],
+									next: Number,
+								},
+						}
 				},
 		}
 

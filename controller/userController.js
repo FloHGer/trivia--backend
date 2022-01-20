@@ -2,6 +2,7 @@ const {HttpError} = require("../errors/errorController.js");
 const fs = require("fs");
 const User = require("../schemas/userSchema.js");
 const Game = require("../schemas/gameSchema.js");
+const Rank = require("../schemas/rankingSchema.js");
 
 module.exports = userController = {
   getUser: async (req, res, nxt) => {
@@ -117,19 +118,18 @@ module.exports = userController = {
     }
   },
 
-// NEEDS WORK
-
-  // getRanks: async (req, res, nxt) => {
-  //   console.log("GET on /user/:username/ranks");
-  //   try {
-  //     const ranks = await Ranks.findOne();
-  //     if (!ranks)
-  //       return res.status(204).send({message: "Player Ranks not found"});
-  //     return res.send({message: "success", payload: ranks});
-  //   } catch (err) {
-  //     nxt(err);
-  //   }
-  // },
+  getRanks: async (req, res, nxt) => {
+    console.log("GET on /user/:username/ranks");
+    // try {
+    //   const rankings = await Rank.find();
+    //   rankings.map(ranking => {ranking.name: ranking.list.map(
+    //     (listEntry, i) => listEntry.username === res.params.username ? i : null
+    //   )});
+    //   return res.send({message: "success", payload: XXX});
+    // } catch (err) {
+    //   nxt(err);
+    // }
+  },
 
   getAchievs: async (req, res, nxt) => {
     console.log("GET on /user/:username/achieves");
