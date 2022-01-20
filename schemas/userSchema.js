@@ -10,6 +10,10 @@ const userSchema = new Schema({
   dob: {type: Date},
   nat: {type: String},
   img: {type: String},
+  rankings: {
+    totalScore: {type: Number},
+    highScore: {type: Number},
+  },
   stats: {
     gamesPlayed: {type: Number, default: 0},
     answers: {

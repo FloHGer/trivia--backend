@@ -10,7 +10,7 @@ module.exports = async (req, res, nxt) => {
       {$sort: {'stats.score.high': -1}}
     ]);
     if(!highScoreRanking) return res.status(204).send({message: 'aggregation failed'});
-    highScoreRanking.map((user, i) => {console.log('asd',user); highScoreRanking[i] = {username: user.username, value: user.stats.score.high}});
+    highScoreRanking.map((user, i) => highScoreRanking[i] = {username: user.username, value: user.stats.score.high});
 
     const highScoreUpdate = await Ranking.updateOne({name: 'highscore'},
       {list: highScoreRanking},
@@ -36,6 +36,7 @@ module.exports = async (req, res, nxt) => {
     if(!totalScoreUpdate.modifiedCount && !totalScoreUpdate.upsertedCount)
       return res.status(204).send({message: 'totalScoreRanking not found'});
 
+// RESPONSE
     return res.send({message: 'game posted', payload: {game: res.game, achievs: res.newAchievs}});
   }catch(err){nxt(err)}
 }

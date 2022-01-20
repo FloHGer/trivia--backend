@@ -69,17 +69,17 @@ module.exports = async(req, res, nxt) => {
         newAchievs.push(`${achievValues.completedCategoriesMax[i]} ${i === 0 ? 'category' : 'categories'} completed in one game!`);
       };
       if(achievs.completedCategories.max.unlocked.length < 6 
-        && achievs.completedCategories.max.unlocked.length === i)
-      achievs.completedCategories.max.next = achievValues.completedCategoriesMax[i] - stats.completedCategories.max;
+      && achievs.completedCategories.max.unlocked.length === i)
+        achievs.completedCategories.max.next = achievs.completedCategories.max.unlocked.length + 1;
     };
 
     if(achievs.all === false
-      && achievs.gamesPlayed.unlocked.length === 3
-      && achievs.correctAnswers.unlocked.length === 3
-      && achievs.score.high.unlocked.length === 3
-      && achievs.score.total.unlocked.length === 3
-      && achievs.completedCategories.max.unlocked.length === 6
-      && achievs.completedCategories.total.unlocked.length === 3
+    && achievs.gamesPlayed.unlocked.length === 3
+    && achievs.correctAnswers.unlocked.length === 3
+    && achievs.score.high.unlocked.length === 3
+    && achievs.score.total.unlocked.length === 3
+    && achievs.completedCategories.max.unlocked.length === 6
+    && achievs.completedCategories.total.unlocked.length === 3
     ){
       achievs.all.unlocked = Date.now();
       newAchievs.push('ALL Achievements!');
