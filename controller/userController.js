@@ -37,8 +37,14 @@ module.exports = userController = {
           `./uploads/profileImages/${req.body.updates.username}.png`,
           err => (err ? console.log(err) : null)
         );
+        if (!req.body.updates.nat) {
+          return (req.body.updates.nat =
+             "uploads/countryFlags/question-mark-flag.png");
+        }
+
       }
       return res.status(201).send({message: "user successfully updated"});
+      
     } catch (err) {
       nxt(err);
     }
@@ -119,17 +125,17 @@ module.exports = userController = {
 
 // NEEDS WORK
 
-  // getRanks: async (req, res, nxt) => {
-  //   console.log("GET on /user/:username/ranks");
-  //   try {
-  //     const ranks = await Ranks.findOne();
-  //     if (!ranks)
-  //       return res.status(204).send({message: "Player Ranks not found"});
-  //     return res.send({message: "success", payload: ranks});
-  //   } catch (err) {
-  //     nxt(err);
-  //   }
-  // },
+  getRanks: async (req, res, nxt) => {
+    console.log("GET on /user/:username/ranks");
+    try {
+      const ranks = await Ranks.findOne();
+      if (!ranks)
+        return res.status(204).send({message: "Player Ranks not found"});
+      return res.send({message: "success", payload: ranks});
+    } catch (err) {
+      nxt(err);
+    }
+  },
 
   getAchievs: async (req, res, nxt) => {
     console.log("GET on /user/:username/achieves");
@@ -173,4 +179,6 @@ module.exports = userController = {
     );
     res.send({message: "Profile image deleted"});
   },
+
+
 };

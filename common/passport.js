@@ -18,12 +18,12 @@ passport.use(new GoogleStrategy(
     if(DBUser) return done(null, DBUser.id);
 
     DBUser = await User.create({
-      provider: profile.provider,
-      username: profile.displayName,
-      email: profile.emails[0].value,
-      id: profile.id,
-      dob: null,
-      img: profile.photos[0].value,
+       provider: profile.provider,
+       username: profile.displayName,
+       email: profile.emails[0].value,
+       id: profile.id,
+       dob: null,
+       img: profile.photos[0].value,
     });
     if(DBUser) return done(null, DBUser.id);
 
