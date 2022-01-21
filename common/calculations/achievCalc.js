@@ -18,7 +18,7 @@ module.exports = async(req, res, nxt) => {
 
     for(let i = 0; i < 3; i++) {
       if(stats.gamesPlayed === achievValues.gamesPlayed[i]) {
-        achievs.gamesPlayed.unlocked.push(Date.now());
+        achievs.gamesPlayed.unlocked.push((new Date().toLocaleDateString('de-de')));
         newAchievs.push(`${achievValues.gamesPlayed[i]} Games played!`);
       };
       if(achievs.gamesPlayed.unlocked.length < 3 
@@ -27,7 +27,7 @@ module.exports = async(req, res, nxt) => {
 
       if(stats.answers.correct >= achievValues.correctAnswers[i]
       && achievs.correctAnswers.unlocked.length === i) {
-        achievs.correctAnswers.unlocked.push(Date.now());
+        achievs.correctAnswers.unlocked.push((new Date().toLocaleDateString('de-de')));
         newAchievs.push(`${achievValues.correctAnswers[i]} correct answers!`);
       };
       if(achievs.correctAnswers.unlocked.length < 3 
@@ -36,7 +36,7 @@ module.exports = async(req, res, nxt) => {
 
       if(stats.score.high >= achievValues.highScore[i]
       && achievs.score.high.unlocked.length === i) {
-        achievs.score.high.unlocked.push(Date.now());
+        achievs.score.high.unlocked.push((new Date().toLocaleDateString('de-de')));
         newAchievs.push(`HIGHSCORE of ${achievValues.highScore[i]}!`);
       };
       if(achievs.score.high.unlocked.length < 3 
@@ -45,7 +45,7 @@ module.exports = async(req, res, nxt) => {
 
       if(stats.score.total >= achievValues.totalScore[i]
       && achievs.score.total.unlocked.length === i) {
-        achievs.score.total.unlocked.push(Date.now());
+        achievs.score.total.unlocked.push((new Date().toLocaleDateString('de-de')));
         newAchievs.push(`Total score of ${achievValues.totalScore[i]}!`);
       };
       if(achievs.score.total.unlocked.length < 3 
@@ -54,7 +54,7 @@ module.exports = async(req, res, nxt) => {
 
       if(stats.completedCategories.total >= achievValues.completedCategoriesTotal[i]
       && achievs.completedCategories.total.unlocked.length === i) {
-        achievs.completedCategories.total.unlocked.push(Date.now());
+        achievs.completedCategories.total.unlocked.push((new Date().toLocaleDateString('de-de')));
         newAchievs.push(`${achievValues.completedCategoriesTotal[i]} completed categories!`);
       };
       if(achievs.completedCategories.total.unlocked.length < 3 
@@ -65,7 +65,7 @@ module.exports = async(req, res, nxt) => {
     for(let i = 0; i < 6; i++){
       if(stats.completedCategories.max >= i + 1
       && achievs.completedCategories.max.unlocked.length === i) {
-        achievs.completedCategories.max.unlocked.push(Date.now());
+        achievs.completedCategories.max.unlocked.push((new Date().toLocaleDateString('de-de')));
         newAchievs.push(`${achievValues.completedCategoriesMax[i]} ${i === 0 ? 'category' : 'categories'} completed in one game!`);
       };
       if(achievs.completedCategories.max.unlocked.length < 6 
@@ -81,7 +81,7 @@ module.exports = async(req, res, nxt) => {
     && achievs.completedCategories.max.unlocked.length === 6
     && achievs.completedCategories.total.unlocked.length === 3
     ){
-      achievs.all.unlocked = Date.now();
+      achievs.all.unlocked = (new Date().toLocaleDateString('de-de'));
       newAchievs.push('ALL Achievements!');
     };
 
