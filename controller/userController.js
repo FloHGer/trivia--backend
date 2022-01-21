@@ -8,7 +8,7 @@ module.exports = userController = {
   getUser: async (req, res, nxt) => {
     console.log("GET on /user/:username/");
     try {
-      const user = await User.findOne({username: req.params.username}, '-__v -_id -id -provider -img').populate('games');
+      const user = await User.findOne({username: req.params.username}, '-__v -_id -id -provider').populate('games');
       if (!user) return res.status(204).send("User does not exist");
       return res.send({message: "success", payload: user});
     } catch (err) {
