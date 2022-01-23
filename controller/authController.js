@@ -8,6 +8,12 @@ const sendMail = require('../common/nodemailer.js');
 
 
 module.exports = authController = {
+  check: async(req, res, nxt) => {
+    if(req.user) return res.send({message: 'success', payload: req.user.username});
+    return res.send({message: 'not logged in'});
+  },
+
+
   loginRequest: async (req, res, nxt) => {
     console.log('POST on /auth/mail');
     try {
@@ -61,23 +67,22 @@ module.exports = authController = {
   //   }catch(err){nxt(err)}
   // },
 
-  test: async(req, res, nxt) => {
-    console.log('message')
-  },
 
   passportCallback: passport.authenticate(['google', 'github'], {
-    successRedirect: '/dashboard',
-    successMessage: 'login successful',
-    failureRedirect: '/auth',
+    successRedirect: process.env.FRONTEND,
+    successMessage: `date: ${(new Date()).toLocaleDateString('de-de')} -- time: ${(new Date()).toLocaleTimeString('de-de')}`,
+    failureRedirect: process.env.FRONTEND,
     failureMessage: 'login failed',
   }),
 
 
   logoutUser: (req, res, nxt) => {
     console.log('POST on /auth/logout');
-    req.logout();
+    console.log(req.session.passport)
     req.session.destroy();
-    res.redirect('/');
+    req.logout();
+    // res.redirect(process.env.FRONTEND);
+    res.send({message: 'logged out'});
   },
 
 };

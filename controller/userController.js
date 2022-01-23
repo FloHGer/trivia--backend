@@ -29,11 +29,8 @@ module.exports = userController = {
         return res.status(304).send({message: "Not modified"});
 
       if (req.body.updates.username) {
-        if (
-          !fs.existsSync(`./uploads/profileImages/${req.params.username}.png`)
-        ) {
-          return res.status(204).send({message: "no profile picture there"});
-        }
+        if (!fs.existsSync(`./uploads/profileImages/${req.params.username}.png`))
+          return res.status(204).send({message: "no picture existing"});
         fs.rename(
           `./uploads/profileImages/${req.params.username}.png`,
           `./uploads/profileImages/${req.body.updates.username}.png`,

@@ -6,6 +6,9 @@ const authController = require('../controller/authController.js');
 require('../common/passport.js');
 
 
+// CHECK AUTH STATE
+router.get('/check', authController.check);
+
 
 // LOGOUT
 router.get('/logout', authController.logoutUser);
@@ -20,7 +23,7 @@ router.get('/github', passport.authenticate('github'));
 
 
 // CALLBACK
-router.get('/callback', authController.passportCallback, authController.test);
+router.get('/callback', authController.passportCallback);
 
 
 // DISCORD?!

@@ -1,7 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require( 'passport-google-oauth20' ).Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
-const TokenStrategy = require('passport-accesstoken').Strategy;
 
 const User = require('../schemas/userSchema.js');
 
@@ -14,18 +13,17 @@ passport.use(new GoogleStrategy(
     callbackURL: 'http://localhost:3003/auth/callback', // change to https later
   },
   async (accessToken, refreshToken, profile, done) => {
-    let DBUser = await User.findOne({id: profile.id, provider: 'google'});
-    if(DBUser) return done(null, DBUser.id);
+    const DBUserFound = await User.findOne({id: profile.id, provider: 'google'});
+    if(DBUserFound) return done(null, DBUserFound.id);
 
-    DBUser = await User.create({
+    const DBUserCreated = await User.create({
       provider: profile.provider,
       username: profile.displayName,
       email: profile.emails[0].value,
       id: profile.id,
-      dob: null,
       img: profile.photos[0].value,
     });
-    if(DBUser) return done(null, DBUser.id);
+    if(DBUserCreated) return done(null, DBUserCreated.id);
 
     return done(err);
   }
@@ -40,47 +38,47 @@ passport.use(new GitHubStrategy({
   },
   async (accessToken, refreshToken, profile, done) => {
 console.log('strat1')
-    let DBUser = await User.findOne({id: profile.id, provider: 'github'});
-    if(DBUser) return done(null, DBUser.id);
+    const DBUserFound = await User.findOne({id: profile.id, provider: 'github'});
+    if(DBUserFound) return done(null, DBUserFound.id);
 
-    DBUser = await User.create({
+    const DBUserCreated = await User.create({
       provider: profile.provider,
-      user: profile.username,
-      email: null,
+      username: profile.username,
       id: profile.id,
-      dob: null,
       img: profile.photos[0].value,
     });
     console.log('strat2')
-    if(DBUser) return done(null, DBUser.id);
+    if(DBUserCreated) return done(null, DBUserCreated.id);
 
     return done(err);
   }
 ));
 
 
-passport.use(new TokenStrategy({
-    tokenField: 'token',
-    callbackURL: 'http://localhost:3003/auth/callback',
-  },
-  async (token, done) => {
-    console.log('token works')
-    await User.findOne({token}, (err, user) => {
-      if(err) return done(err);
-      if(!user) return done(null, false);
-      if(!user.verifyToken(token)) return done(null, false);
-      return done(null, user);
-    });
-  }
-));
+// passport.use(new TokenStrategy({
+//     tokenField: 'token',
+//     callbackURL: 'http://localhost:3003/auth/callback',
+//   },
+//   async (token, done) => {
+//     console.log('token works')
+//     await User.findOne({token}, (err, user) => {
+//       if(err) return done(err);
+//       if(!user) return done(null, false);
+//       if(!user.verifyToken(token)) return done(null, false);
+//       return done(null, user);
+//     });
+//   }
+// ));
 
 
 passport.serializeUser((userID, done) => {
-  return done(null, userID) // data for session
+  console.log('serial')
+  return done(null, userID);
 });
 
 passport.deserializeUser(async(userID, done) => {
-  const DBUser = await User.findOne({id: userID})
+  const DBUser = await User.findOne({id: userID});
+  console.log('deserial')
   if(!DBUser) return done(null, false);
   return done(null, DBUser);
 });

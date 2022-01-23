@@ -5,11 +5,11 @@ const {Schema, model} = require('mongoose');
 const userSchema = new Schema({
   provider: {type: String, required: true},
   username: {type: String, unique: true, required: true},
-  email: {type: String, unique: true},
+  email: {type: String, unique: true, default: null},
   id: {type: Number, unique: true},
-  dob: {type: Date},
-  nat: {type: String},
-  img: {type: String},
+  dob: {type: Date, default: null},
+  nat: {type: String, default: null},
+  img: {type: String, default: null},
   rankings: {
     totalScore: {type: Number},
     highScore: {type: Number},

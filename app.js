@@ -1,6 +1,7 @@
 const express = require('express');
-const session = require('express-session');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 const passport = require('passport');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
@@ -12,10 +13,6 @@ const userRouter = require('./routes/userRoute.js');
 const rankingRouter = require('./routes/rankingRoute.js');
 const {errorController} = require('./errors/errorController.js');
 const generalController = require('./controller/generalController.js');
-
-
-// Server Start
-const app = express();
 
 
 // Database Connection
@@ -30,35 +27,41 @@ mongoose.connection
   });
 
 
+// Server Start
+const app = express();
+
+const store = new MongoDBStore({
+  uri: process.env.DB_CONNECT,
+  collection: 'sessions',
+});
+store.on('error', (err) => console.error(err));
+
+
 // Middleware
-// app.use((req, res, nxt) => {
-//   res.header('Access-Control-Allow-Origin', '*');
-//   res.header('Access-Control-Allow-Methods', '*');
-//   res.header('Access-Control-Allow-Headers', "Origin, x-Requested-With, Content-Type, Accept" );
-//   nxt()
-// })
-app.use(cors());
-// app.use(cors({
-//   origin: 'https://localhost:3000',
-//   methods: '*',
-//   header: '*'
-// }));
+app.use(cors({
+  origin: process.env.FRONTEND,
+  methods: '*',
+  header: '*',
+  credentials: true,
+}));
 app.use(fileUpload({
   createParentPath: true,
 }));
 app.use(express.json());
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  cookie: {},
-  resave: false,
-  saveUninitialized: false, // brauchen wir das?
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 30 // 30days
+  },
+  store,
+  resave: true,
+  saveUninitialized: false,
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 
 // Routes
-app.get('/', (req, res) => res.send('<h1>TEST</h1>'));
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.get('/stats', generalController.stats);
