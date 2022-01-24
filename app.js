@@ -62,6 +62,7 @@ app.use(passport.session());
 
 
 // Routes
+app.get('/', (req, res) => res.send('<h1>HI</h1>'))
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.get('/stats', generalController.stats);
