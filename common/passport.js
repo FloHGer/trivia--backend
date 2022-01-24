@@ -37,20 +37,19 @@ passport.use(new GitHubStrategy({
     callbackURL: 'http://localhost:3003/auth/callback',
   },
   async (accessToken, refreshToken, profile, done) => {
-console.log('strat1')
-    const DBUserFound = await User.findOne({id: profile.id, provider: 'github'});
-    if(DBUserFound) return done(null, DBUserFound.id);
+    console.log(profile)
+    // const DBUserFound = await User.findOne({id: profile.id, provider: 'github'});
+    // if(DBUserFound) return done(null, DBUserFound.id);
 
-    const DBUserCreated = await User.create({
-      provider: profile.provider,
-      username: profile.username,
-      id: profile.id,
-      img: profile.photos[0].value,
-    });
-    console.log('strat2')
-    if(DBUserCreated) return done(null, DBUserCreated.id);
+    // const DBUserCreated = await User.create({
+    //   provider: profile.provider,
+    //   username: profile.username,
+    //   id: profile.id,
+    //   img: profile.photos[0].value,
+    // });
+    // if(DBUserCreated) return done(null, DBUserCreated.id);
 
-    return done(err);
+    // return done(err);
   }
 ));
 
@@ -72,13 +71,11 @@ console.log('strat1')
 
 
 passport.serializeUser((userID, done) => {
-  console.log('serial')
   return done(null, userID);
 });
 
 passport.deserializeUser(async(userID, done) => {
   const DBUser = await User.findOne({id: userID});
-  console.log('deserial')
   if(!DBUser) return done(null, false);
   return done(null, DBUser);
 });
