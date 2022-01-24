@@ -3,6 +3,7 @@ const fs = require("fs");
 const User = require("../schemas/userSchema.js");
 const Game = require("../schemas/gameSchema.js");
 const Rank = require("../schemas/rankingSchema.js");
+const path = require("path");
 
 module.exports = userController = {
   getUser: async (req, res, nxt) => {
@@ -146,7 +147,7 @@ module.exports = userController = {
     }
   },
 
-  upload: (req, res, nxt) => {
+  upload: async(req, res, nxt) => {
     console.log("POST on /user/:username/upload");
     if (!req.files) return res.status(204).send({message: "no file uploaded"});
     console.log(req.files);
@@ -157,7 +158,11 @@ module.exports = userController = {
     userImg.name = `${req.params.username}.png`;
     const path = `./uploads/profileImages/${userImg.name}`;
     userImg.mv(path);
-
+    const update = await User.updateOne(
+       { username: req.params.username },
+       { img: `http://${req.headers.host}/uploads/profileImages/${userImg.name}` }
+    );
+    if (!update.modifiedCount) return res.status(404).send({ message: "user not updated" });
     res.send({message: "profile image uploaded"});
   },
 
@@ -172,5 +177,11 @@ module.exports = userController = {
     res.send({message: "Profile image deleted"});
   },
 
-
+  getImage: (req, res, nxt) => {
+    console.log("GET on /user/:username/image");
+    console.log(__dirname);
+    res.sendFile(
+       `/uploads/profileImages/${req.params.username}.png`, {root: '.'}
+    );
+  }
 };

@@ -29,4 +29,6 @@ router.route('/:username/upload')
   .get(userController.deleteUpload)
   .post(userController.upload);
 
+router.get('/:username/image', userController.getImage)
+
 module.exports = router;
