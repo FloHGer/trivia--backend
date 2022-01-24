@@ -68,20 +68,24 @@ module.exports = authController = {
   // },
 
 
-  passportCallback: passport.authenticate(['google', 'github'], {
-    successRedirect: process.env.FRONTEND,
+  googleCallback: passport.authenticate('google', {
+    successRedirect: `${process.env.FRONTEND}`,
     successMessage: `date: ${(new Date()).toLocaleDateString('de-de')} -- time: ${(new Date()).toLocaleTimeString('de-de')}`,
-    failureRedirect: process.env.FRONTEND,
+    failureRedirect: `${process.env.FRONTEND}`,
+    failureMessage: 'login failed',
+  }),
+
+  githubCallback: passport.authenticate('github', {
+    successRedirect: `${process.env.FRONTEND}`,
+    successMessage: `date: ${(new Date()).toLocaleDateString('de-de')} -- time: ${(new Date()).toLocaleTimeString('de-de')}`,
+    failureRedirect: `${process.env.FRONTEND}`,
     failureMessage: 'login failed',
   }),
 
 
   logoutUser: (req, res, nxt) => {
-    console.log('POST on /auth/logout');
-    console.log(req.session.passport)
+    console.log('GET on /auth/logout');
     req.session.destroy();
-    req.logout();
-    // res.redirect(process.env.FRONTEND);
     res.send({message: 'logged out'});
   },
 

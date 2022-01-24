@@ -39,7 +39,7 @@ store.on('error', (err) => console.error(err));
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND,
+  origin: ['https://localhost:3000', 'https://trivia-ga.me', process.env.FRONTEND],
   methods: '*',
   header: '*',
   credentials: true,
@@ -54,7 +54,7 @@ app.use(session({
     maxAge: 1000 * 60 * 60 * 24 * 30 // 30days
   },
   store,
-  resave: true,
+  resave: false,
   saveUninitialized: false,
 }));
 app.use(passport.initialize());
@@ -62,6 +62,7 @@ app.use(passport.session());
 
 
 // Routes
+app.get('/', (req, res) => res.send('<h1>HI</h1>'))
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.get('/stats', generalController.stats);

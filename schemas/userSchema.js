@@ -8,7 +8,7 @@ const userSchema = new Schema({
   email: {type: String, unique: true, default: null},
   id: {type: Number, unique: true},
   dob: {type: Date, default: null},
-  nat: {type: String, default: null},
+  nat: {type: String, default: 'un'},
   img: {type: String, default: null},
   rankings: {
     totalScore: {type: Number},

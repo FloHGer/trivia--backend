@@ -16,14 +16,12 @@ router.get('/logout', authController.logoutUser);
 
 // Google
 router.get('/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+router.get('/google/callback', authController.googleCallback);
 
 
 // GitHub
 router.get('/github', passport.authenticate('github'));
-
-
-// CALLBACK
-router.get('/callback', authController.passportCallback);
+router.get('/github/callback', authController.githubCallback);
 
 
 // DISCORD?!
