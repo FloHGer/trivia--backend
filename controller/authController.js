@@ -68,10 +68,17 @@ module.exports = authController = {
   // },
 
 
-  passportCallback: passport.authenticate(['github', 'github'], {
-    successRedirect: `${process.env.FRONTEND}/dashboard`,
+  googleCallback: passport.authenticate('google', {
+    successRedirect: `${process.env.FRONTEND}`,
     successMessage: `date: ${(new Date()).toLocaleDateString('de-de')} -- time: ${(new Date()).toLocaleTimeString('de-de')}`,
-    failureRedirect: `${process.env.FRONTEND}/dashboard`,
+    failureRedirect: `${process.env.FRONTEND}`,
+    failureMessage: 'login failed',
+  }),
+
+  githubCallback: passport.authenticate('github', {
+    successRedirect: `${process.env.FRONTEND}`,
+    successMessage: `date: ${(new Date()).toLocaleDateString('de-de')} -- time: ${(new Date()).toLocaleTimeString('de-de')}`,
+    failureRedirect: `${process.env.FRONTEND}`,
     failureMessage: 'login failed',
   }),
 

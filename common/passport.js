@@ -10,7 +10,7 @@ passport.use(new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3003/auth/callback', // change to https later
+    callbackURL: 'http://localhost:3003/auth/google/callback', // change to https later
   },
   async (accessToken, refreshToken, profile, done) => {
     const DBUserFound = await User.findOne({id: profile.id, provider: 'google'});
@@ -34,22 +34,21 @@ passport.use(new GoogleStrategy(
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'http://localhost:3003/auth/callback',
+    callbackURL: 'http://localhost:3003/auth/github/callback',
   },
   async (accessToken, refreshToken, profile, done) => {
-    console.log(profile)
-    // const DBUserFound = await User.findOne({id: profile.id, provider: 'github'});
-    // if(DBUserFound) return done(null, DBUserFound.id);
+    const DBUserFound = await User.findOne({id: profile.id, provider: 'github'});
+    if(DBUserFound) return done(null, DBUserFound.id);
 
-    // const DBUserCreated = await User.create({
-    //   provider: profile.provider,
-    //   username: profile.username,
-    //   id: profile.id,
-    //   img: profile.photos[0].value,
-    // });
-    // if(DBUserCreated) return done(null, DBUserCreated.id);
+    const DBUserCreated = await User.create({
+      provider: profile.provider,
+      username: profile.username,
+      id: profile.id,
+      img: profile.photos[0].value,
+    });
+    if(DBUserCreated) return done(null, DBUserCreated.id);
 
-    // return done(err);
+    return done(err);
   }
 ));
 
