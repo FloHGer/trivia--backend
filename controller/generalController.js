@@ -35,9 +35,4 @@ module.exports = generalController = {
 
       res.send({ message: "success", payload: feedback });
    },
-
-   getFlags: async (req, res, nxt) => {
-      console.log(Object.keys(flags));
-      res.send({ message: "success", payload: flags });
-   },
 };

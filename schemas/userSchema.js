@@ -5,7 +5,7 @@ const {Schema, model} = require('mongoose');
 const userSchema = new Schema({
   provider: {type: String, required: true},
   username: {type: String, unique: true, required: true},
-  email: {type: String, unique: true, default: null},
+  email: {type: String, unique: true, sparse: true},
   id: {type: Number, unique: true},
   dob: {type: Date, default: null},
   nat: {type: String, default: 'un'},

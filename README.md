@@ -158,6 +158,11 @@ https://app.creately.com/diagram/NlH88ez9Ror/edit
 				}
 		}
 
+#### /user/:username/ranks
+
+	- GET
+		[under construction]
+
 #### /user/:username/achievs
 
 	- GET
@@ -207,14 +212,15 @@ https://app.creately.com/diagram/NlH88ez9Ror/edit
 #### /user/:username/upload
 
 	- GET
-		{
-			message: String,
-		}
+		[under construction]
+
+#### /user/:username/upload
 
 	- POST
-		{ // profile image
-			userImg: pngFile
-		}
+		[under construction]
+
+	- DELETE
+		[under construction]
 
 ---
 
@@ -254,7 +260,7 @@ https://app.creately.com/diagram/NlH88ez9Ror/edit
 				}],
 		}
 
-### /ranks/highscore
+### /ranks/totalscore
 
 	- GET
 		{

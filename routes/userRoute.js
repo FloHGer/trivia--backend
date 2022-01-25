@@ -25,10 +25,11 @@ router.get('/:username/ranks', userController.getRanks);
 
 router.get('/:username/achievs', userController.getAchievs);
 
+router.get('/:username/image', userController.getImage);
+
 router.route('/:username/upload')
   .get(userController.deleteUpload)
-  .post(userController.upload);
+  .post(userController.uploadImage);
 
-router.get('/:username/image', userController.getImage)
 
 module.exports = router;
