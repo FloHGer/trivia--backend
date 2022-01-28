@@ -25,7 +25,7 @@ router.get('/:username/ranks', userController.getRanks);
 
 router.get('/:username/achievs', userController.getAchievs);
 
-router.get('/:username/image', userController.getImage);
+// route
 
 router.route('/:username/upload')
   .get(userController.deleteUpload)

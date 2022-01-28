@@ -44,6 +44,7 @@ app.use(cors({
   header: '*',
   credentials: true,
 }));
+app.use(express.static('uploads'))
 app.use(fileUpload({
   createParentPath: true,
 }));

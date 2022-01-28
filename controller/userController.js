@@ -34,9 +34,9 @@ module.exports = userController = {
 			if (!update.modifiedCount && update.matchedCount) return res.status(304).send({message: 'Not modified'});
 
 			if (req.body.updates.username) {
-				if (!fs.existsSync(`./uploads/profileImages/${req.params.username}.png`))
+				if (!fs.existsSync(`./uploads/${req.params.username}.png`))
 					return res.status(204).send({message: 'no picture existing'});
-				fs.rename(`./uploads/profileImages/${req.params.username}.png`, `./uploads/profileImages/${req.body.updates.username}.png`, err =>
+				fs.rename(`./uploads/${req.params.username}.png`, `./uploads/${req.body.updates.username}.png`, err =>
 					err ? console.log(err) : null
 				);
 			}
@@ -54,10 +54,10 @@ module.exports = userController = {
 				username: req.params.username,
 			});
 			if (!deletion.deletedCount) return res.status(204).send({message: 'user not deleted.'});
-			if (!fs.existsSync(`./uploads/profileImages/${req.params.username}.png`)) {
+			if (!fs.existsSync(`./uploads/${req.params.username}.png`)) {
 				return res.status(204).send({message: 'no profile picture there'});
 			}
-			fs.unlink(`./uploads/profileImages/${req.params.username}.png`, err => (err ? console.log(err) : null));
+			fs.unlink(`./uploads/${req.params.username}.png`, err => (err ? console.log(err) : null));
 
 			return res.send({message: 'user deleted'});
 		} catch (err) {
@@ -133,10 +133,13 @@ module.exports = userController = {
 		}
 	},
 
-  getImage: (req, res, nxt) => {
-		console.log('GET on /user/:username/image');
-		res.sendFile(`/uploads/profileImages/${req.params.username}.png`, {root: '.'});
-	},
+  // getImage: (req, res, nxt) => {
+	// 	console.log('GET on /user/:username/image');
+  //   if (!fs.existsSync(`./uploads/${req.params.username}.png`))
+  //      return nxt(new HttpError(404, "file not found"));
+
+	// 	res.sendFile(`/uploads/${req.params.username}.png`, {root: '.'});
+	// },
 
 	uploadImage: async (req, res, nxt) => {
 		console.log('POST on /user/:username/upload');
@@ -146,11 +149,11 @@ module.exports = userController = {
 
 		const userImg = req.files.userImg;
 		userImg.name = `${req.params.username}.png`;
-		const path = `./uploads/profileImages/${userImg.name}`;
+		const path = `./uploads/${userImg.name}`;
 		userImg.mv(path);
 		const update = await User.updateOne(
 			{username: req.params.username},
-			{img: `http://${req.headers.host}/uploads/profileImages/${userImg.name}`}
+			{img: `http://${req.headers.host}/${userImg.name}`}
 		);
 		if (!update.modifiedCount) return res.status(404).send({message: 'user not updated'});
 		res.send({message: 'profile image uploaded'});
@@ -158,10 +161,10 @@ module.exports = userController = {
 
 	deleteUpload: (req, res, nxt) => {
 		console.log('GET on /user/:username/upload/delete');
-		if (!fs.existsSync(`./uploads/profileImages/${req.params.username}.png`)) {
+		if (!fs.existsSync(`./uploads/${req.params.username}.png`)) {
 			return nxt(new HttpError(404, 'file not found'));
 		}
-		fs.unlink(`./uploads/profileImages/${req.params.username}.png`, err => (err ? console.log(err) : null));
+		fs.unlink(`./uploads/${req.params.username}.png`, err => (err ? console.log(err) : null));
 		res.send({message: 'Profile image deleted'});
 	},
 };

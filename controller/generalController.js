@@ -1,7 +1,6 @@
 const Stat = require("../schemas/statSchema.js");
 const Feedback = require("../schemas/feedbackSchema.js");
 const sendMail = require("../common/nodemailer.js");
-const flags = require("../uploads/countryFlags/countryCodes.js");
 
 module.exports = generalController = {
    stats: async (req, res, nxt) => {
