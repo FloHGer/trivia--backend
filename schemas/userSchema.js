@@ -72,8 +72,8 @@ const userSchema = new Schema({
   games: [{type: Schema.Types.ObjectId, ref: 'Game'}],
   token: {type: String},
   options: {
-    // setting1: state
-    // setting2: state
+    gameMode: {type: String, default: 'quick'},
+    categories: [{type: String}],
   },
 })
 
