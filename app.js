@@ -39,7 +39,8 @@ store.on('error', (err) => console.error(err));
 
 // Middleware
 app.use(cors({
-  origin: ['https://localhost:3000', 'https://trivia-ga.me', process.env.FRONTEND],
+  origin: '*',
+  // origin: ['https://localhost:3000', 'https://trivia-ga.me', process.env.FRONTEND],
   methods: '*',
   header: '*',
   credentials: true,
