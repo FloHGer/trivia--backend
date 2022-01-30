@@ -78,5 +78,5 @@ app.use(errorController.errorHandler);
 
 
 // Server End
-const port = process.env.PORT || 3003;
+const port = process.env.PORT || process.env.CONFIG_SYSTEM_PORT || 3003;
 app.listen(port, () => console.log(`listening on PORT: ${port}`));
