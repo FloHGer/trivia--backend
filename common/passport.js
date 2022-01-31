@@ -10,7 +10,7 @@ passport.use(new GoogleStrategy(
   {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: 'https://triviagamebackend.herokuapp.com/auth/google/callback',
+    callbackURL: `${process.env.CALLBACK}/auth/google/callback`,
   },
   async (accessToken, refreshToken, profile, done) => {
     const DBUserFound = await User.findOne({id: profile.id, provider: 'google'});
@@ -34,7 +34,7 @@ passport.use(new GoogleStrategy(
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: 'https://triviagamebackend.herokuapp.com/auth/github/callback',
+    callbackURL: `${process.env.CALLBACK}/auth/github/callback`,
   },
   async (accessToken, refreshToken, profile, done) => {
     const DBUserFound = await User.findOne({id: profile.id, provider: 'github'});
