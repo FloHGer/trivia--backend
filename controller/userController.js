@@ -34,11 +34,12 @@ module.exports = userController = {
 			if (!update.modifiedCount && update.matchedCount) return res.status(204).send();
 
 			if (req.body.updates.username) {
+				console.log(req.headers.host)
 				if((await User.findOne({username: req.body.updates.username})).img.startsWith(`http://${req.headers.host}`))
-					if (!fs.existsSync(`./uploads/${req.params.username}.png`))
-						return nxt(new HttpError(404, 'picture not found'));
 					fs.rename(`./uploads/${req.params.username}.png`, `./uploads/${req.body.updates.username}.png`, err =>
-					err ? console.log(err) : null
+						err ? console.log(err) : null
+				// if (fs.existsSync(`./uploads/${req.params.username}.png`))
+						// return nxt(new HttpError(404, 'picture not found'));
 				);
 			}
 
