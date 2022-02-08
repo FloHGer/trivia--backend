@@ -7,12 +7,12 @@ const gameSchema = new Schema({
 	// mode: custom / quick
   // options: [], joker / timer
   score: {type: Number},
-  categories: {type: [
+  categories: [
       {
         name: {type: String},
         answers: [{type: Boolean}],
       }
-  ]}
+  ]
 });
 
 module.exports = model('Game', gameSchema);
