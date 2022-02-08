@@ -23,6 +23,13 @@ module.exports = userController = {
 			if (req.body.updates.username) {
 				const userCheck = await User.find({username: req.body.updates.username}).count();
 				if (userCheck) return nxt(new HttpError(409, 'username taken'));
+
+				if((await User.findOne({username: req.params.username})).img.startsWith(`http://${req.headers.host}`)){
+					fs.rename(`./uploads/${req.params.username}.png`, `./uploads/${req.body.updates.username}.png`,
+						err => err ? console.log(err) : null
+					);
+					req.body.updates.img = `http://${req.headers.host}/${req.body.updates.username}.png`
+				}
 			}
 			if (req.body.updates.email) {
 				const userCheck = await User.find({email: req.body.updates.email}).count();
@@ -32,16 +39,6 @@ module.exports = userController = {
 			const update = await User.updateOne({username: req.params.username}, req.body.updates);
 			if (!update.matchedCount) return nxt(new HttpError(404, 'user not found'));
 			if (!update.modifiedCount && update.matchedCount) return res.status(204).send();
-
-			if (req.body.updates.username) {
-				console.log(req.headers.host)
-				if((await User.findOne({username: req.body.updates.username})).img.startsWith(`http://${req.headers.host}`))
-					fs.rename(`./uploads/${req.params.username}.png`, `./uploads/${req.body.updates.username}.png`, err =>
-						err ? console.log(err) : null
-				// if (fs.existsSync(`./uploads/${req.params.username}.png`))
-						// return nxt(new HttpError(404, 'picture not found'));
-				);
-			}
 
 			return res.send({message: 'user updated'});
 		} catch (err) {
@@ -146,7 +143,7 @@ module.exports = userController = {
 				{img: `http://${req.headers.host}/${userImg.name}`}
 			);
 			if (!update.matchedCount) return nxt(new HttpError(404, 'user not found'));
-			if (!update.modifiedCount) return res.send({message: 'user not modified'});
+			// if (!update.modifiedCount) return res.send({message: 'user not modified'});
 			return res.send({message: 'profile image uploaded'});
 		}catch(err){nxt(err)}
 	},

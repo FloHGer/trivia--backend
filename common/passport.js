@@ -18,7 +18,7 @@ passport.use(new GoogleStrategy(
 
     const DBUserCreated = await User.create({
       provider: profile.provider,
-      username: profile.displayName,
+      username: profile.displayName.replaceAll(' ', '_'),
       email: profile.emails[0].value,
       id: profile.id,
       img: profile.photos[0].value,
