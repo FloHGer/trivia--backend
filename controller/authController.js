@@ -19,21 +19,19 @@ module.exports = authController = {
     try {
       // check for user
       let DBUser = await User.findOne({email: req.body.email});
+      // create user if unregistered
       if (!DBUser) {
-        // create user if unregistered
         DBUser = await User.create({
           provider: 'email',
-          username: req.body.email,
+          username: req.body.email.slice(0, req.body.email.indexOf('@')),
           email: req.body.email,
           id: null,
-          dob: null,
-          nat: null,
-          img: null,
+          img: `${process.env.CALLBACK}/default.png`,
         });
         if(!DBUser) return nxt(new HttpError(500, 'user not created'));
       }
 
-      // create and add token to user
+      // create token and add it to the user
       const token = jwt.sign({email: DBUser.email}, process.env.JWTKEY, {expiresIn: 5 * 60});
       const update = await User.updateOne({email: req.body.email}, {token});
       if(!update.modifiedCount) return nxt(new HttpError(500, 'user not updated'));
@@ -48,25 +46,17 @@ module.exports = authController = {
           link: `http://${req.headers.host}/auth/email/?token=${token}`, // change to https later
         },
       });
-      if(status) return res.send(status);
+      if(status) return res.send({message: status});
     } catch (err) {nxt(err);}
   },
 
 
-  // verifyToken: async (req, res, nxt) => {
-  //   console.log('GET on /auth/:tid');
-  //   try{
-  //   const tokenCheck = jwt.verify(req.params.tid, process.env.JWTKEY);
-  //   const foundUser = await User.findOne({token: req.params.tid});
-
-  //   if(foundUser && tokenCheck && foundUser.email === tokenCheck.email){
-  //     console.log('success'); // create session here
-  //     return res.send({message: 'login successful', sid: 'PUT SESSION ID HERE!!!'});
-  //   }
-  //   return nxt(new HttpError(404, 'couldn\'t verify'));
-  //   }catch(err){nxt(err)}
-  // },
-
+  emailCallback: passport.authenticate('token', {
+    successRedirect: `${process.env.FRONTEND}/dashboard`,
+    successMessage: `SUCCESS: date: ${(new Date()).toLocaleDateString('de-de')} -- time: ${(new Date()).toLocaleTimeString('de-de')}`,
+    failureRedirect: `${process.env.FRONTEND}/login`,
+    failureMessage: `FAIL: date: ${(new Date()).toLocaleDateString('de-de')} -- time: ${(new Date()).toLocaleTimeString('de-de')}`,
+  }),
 
   googleCallback: passport.authenticate('google', {
     successRedirect: `${process.env.FRONTEND}/dashboard`,

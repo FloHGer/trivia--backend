@@ -30,7 +30,7 @@ router.get('/github/callback', authController.githubCallback);
 // EMail / Token
 router.route('/email')
   .post(authController.loginRequest)
-  .get((req)=>console.log(req.query), passport.authenticate('token'));
+  .get(passport.authenticate('token'), authController.emailCallback);
 
 
 // EXPORT

@@ -1,6 +1,9 @@
 const passport = require('passport');
 const GoogleStrategy = require( 'passport-google-oauth20' ).Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
+const { UniqueTokenStrategy } = require('passport-unique-token');
+
+const jwt = require('jsonwebtoken');
 
 const User = require('../schemas/userSchema.js');
 
@@ -14,7 +17,7 @@ passport.use(new GoogleStrategy(
   },
   async (accessToken, refreshToken, profile, done) => {
     const DBUserFound = await User.findOne({id: profile.id, provider: 'google'});
-    if(DBUserFound) return done(null, DBUserFound.id);
+    if(DBUserFound) return done(null, DBUserFound.username);
 
     const DBUserCreated = await User.create({
       provider: profile.provider,
@@ -23,7 +26,7 @@ passport.use(new GoogleStrategy(
       id: profile.id,
       img: profile.photos[0].value,
     });
-    if(DBUserCreated) return done(null, DBUserCreated.id);
+    if(DBUserCreated) return done(null, DBUserCreated.username);
 
     return done(err);
   }
@@ -39,7 +42,7 @@ passport.use(new GitHubStrategy({
   },
   async (accessToken, refreshToken, profile, done) => {
     const DBUserFound = await User.findOne({id: profile.id, provider: 'github'});
-    if(DBUserFound) return done(null, DBUserFound.id);
+    if(DBUserFound) return done(null, DBUserFound.username);
 
     const DBUserCreated = await User.create({
       provider: profile.provider,
@@ -48,35 +51,34 @@ passport.use(new GitHubStrategy({
       img: profile.photos[0].value,
       email: profile.emails[0].value,
     });
-    if(DBUserCreated) return done(null, DBUserCreated.id);
+    if(DBUserCreated) return done(null, DBUserCreated.username);
 
     return done(err);
   }
 ));
 
 
-// passport.use(new TokenStrategy({
-//     tokenField: 'token',
-//     callbackURL: 'https://triviagamebackend.herokuapp.com/auth/callback',
-//   },
-//   async (token, done) => {
-//     console.log('token works')
-//     await User.findOne({token}, (err, user) => {
-//       if(err) return done(err);
-//       if(!user) return done(null, false);
-//       if(!user.verifyToken(token)) return done(null, false);
-//       return done(null, user);
-//     });
-//   }
-// ));
+passport.use(new UniqueTokenStrategy({tokenQuery: 'token'}, (token, done) => {
+    User.findOne({token}, (err, user) => {
+      if (err) return done(err);
+      if (!user) return done(null, false);
+      jwt.verify(token, process.env.JWTKEY, (err, decoded) => {
+        if (err) return done(err);
+        if (!decoded) return done(null, false);
+        return done(null, user.username);
+      })
+    });
+  }),
+);
 
 
-passport.serializeUser((userID, done) => {
-  return done(null, userID);
+passport.serializeUser((username, done) => {
+  return done(null, username);
 });
 
-passport.deserializeUser(async(userID, done) => {
-  const DBUser = await User.findOne({id: userID});
+passport.deserializeUser(async(username, done) => {
+  const DBUser = await User.findOne({username});
   if(!DBUser) return done(null, false);
   return done(null, DBUser);
 });
+

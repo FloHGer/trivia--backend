@@ -11,7 +11,8 @@ const buildBody = ({purpose, username, link, value, message}) => {
         `
           <h3>Hello ${username},</h3>
           <p>We just recieved a LogIn request for your EMail.</p>
-          <p>To complete the LogIn just click this <a href= ${link}>LINK</a></p>
+          <p>To complete the LogIn just click this <a href= ${link}>LINK</a>.</p>
+          <p>Otherwise ignore this email.</p>
         `,
       };
 
