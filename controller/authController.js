@@ -22,10 +22,8 @@ module.exports = authController = {
       // create user if unregistered
       if (!DBUser) {
         DBUser = await User.create({
-          provider: 'email',
           username: req.body.email.slice(0, req.body.email.indexOf('@')),
           email: req.body.email,
-          id: null,
           img: `${process.env.CALLBACK}/default.png`,
         });
         if(!DBUser) return nxt(new HttpError(500, 'user not created'));

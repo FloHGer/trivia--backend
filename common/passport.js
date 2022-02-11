@@ -16,14 +16,19 @@ passport.use(new GoogleStrategy(
     callbackURL: `${process.env.CALLBACK}/auth/google/callback`,
   },
   async (accessToken, refreshToken, profile, done) => {
-    const DBUserFound = await User.findOne({id: profile.id, provider: 'google'});
-    if(DBUserFound) return done(null, DBUserFound.username);
+    const DBUserFound = await User.findOne({email: profile.emails[0].value});
+    if(DBUserFound){
+      if(!DBUserFound.googleId) await User.updateOne(
+        {email: profile.emails[0].value},
+        {googleId: profile.id}
+      )
+      return done(null, DBUserFound.username);
+    }
 
     const DBUserCreated = await User.create({
-      provider: profile.provider,
       username: profile.displayName.replaceAll(' ', '_'),
       email: profile.emails[0].value,
-      id: profile.id,
+      googleId: profile.id,
       img: profile.photos[0].value,
     });
     if(DBUserCreated) return done(null, DBUserCreated.username);
@@ -41,15 +46,20 @@ passport.use(new GitHubStrategy({
     scope: ["user:email"],
   },
   async (accessToken, refreshToken, profile, done) => {
-    const DBUserFound = await User.findOne({id: profile.id, provider: 'github'});
-    if(DBUserFound) return done(null, DBUserFound.username);
+    const DBUserFound = await User.findOne({email: profile.emails[0].value});
+    if(DBUserFound){
+      if(!DBUserFound.githubId) await User.updateOne(
+        {email: profile.emails[0].value},
+        {githubId: profile.id}
+      )
+      return done(null, DBUserFound.username);
+    }
 
     const DBUserCreated = await User.create({
-      provider: profile.provider,
       username: profile.username,
-      id: profile.id,
-      img: profile.photos[0].value,
       email: profile.emails[0].value,
+      githubId: profile.id,
+      img: profile.photos[0].value,
     });
     if(DBUserCreated) return done(null, DBUserCreated.username);
 
