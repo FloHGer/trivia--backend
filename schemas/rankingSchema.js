@@ -6,8 +6,9 @@ const rankingSchema = new Schema({
   list: [{
     username: {type: String},
     value: {type: Number},
+    img: {type: String},
+    nat: {type: String},
   }],
-  // add further later
 })
 
 module.exports = model('Ranking', rankingSchema);
