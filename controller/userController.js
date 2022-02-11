@@ -163,15 +163,23 @@ module.exports = userController = {
     uploadImage: async (req, res, nxt) => {
         console.log("POST on /user/:username/upload");
         try {
-			const deleteOldImage = await User.findOne({username: req.params.username}, 
-			)
+			const deleteOldImage = await User.findOne({username: req.params.username})
 			console.log(deleteOldImage.img.slice(deleteOldImage.img.lastIndexOf("-")));
-			if (deleteOldImage) {fs.unlink(
-                `./uploads/${req.params.username}${deleteOldImage.img.slice(
-                    deleteOldImage.img.lastIndexOf("-")
-                )}`,
-                (err) => (err ? console.log(err) : null)
-            );}
+
+			if (!deleteOldImage) return nxt(new HttpError(404, 'user not found'))
+			if (
+                deleteOldImage &&
+                !deleteOldImage.img.includes("googleusercontent") &&
+                !deleteOldImage.img.includes("githubusercontent") &&
+                deleteOldImage.img !== `${process.env.CALLBACK}/default.png`
+            ) {
+                fs.unlink(
+                    `./uploads/${req.params.username}${deleteOldImage.img.slice(
+                        deleteOldImage.img.lastIndexOf("-")
+                    )}`,
+                    (err) => (err ? console.log(err) : null)
+                );
+            }
             console.log("Request:", req.files);
             if (!req.files)
                 return nxt(new HttpError(404, "picture not attached"));
