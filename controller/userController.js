@@ -163,19 +163,19 @@ module.exports = userController = {
     uploadImage: async (req, res, nxt) => {
         console.log("POST on /user/:username/upload");
         try {
-			const deleteOldImage = await User.findOne({username: req.params.username})
-			console.log(deleteOldImage.img.slice(deleteOldImage.img.lastIndexOf("-")));
+			const oldImage = await User.findOne({username: req.params.username})
+			console.log(oldImage.img.slice(oldImage.img.lastIndexOf("-")));
 
-			if (!deleteOldImage) return nxt(new HttpError(404, 'user not found'))
+			if (!oldImage) return nxt(new HttpError(404, 'user not found'))
 			if (
-                deleteOldImage &&
-                !deleteOldImage.img.includes("googleusercontent") &&
-                !deleteOldImage.img.includes("githubusercontent") &&
-                deleteOldImage.img !== `${process.env.CALLBACK}/default.png`
+                oldImage &&
+                !oldImage.img.includes("googleusercontent") &&
+                !oldImage.img.includes("githubusercontent") &&
+                oldImage.img !== `${process.env.CALLBACK}/default.png`
             ) {
                 fs.unlink(
-                    `./uploads/${req.params.username}${deleteOldImage.img.slice(
-                        deleteOldImage.img.lastIndexOf("-")
+                    `./uploads/${req.params.username}${oldImage.img.slice(
+                        oldImage.img.lastIndexOf("-")
                     )}`,
                     (err) => (err ? console.log(err) : null)
                 );
@@ -206,14 +206,33 @@ module.exports = userController = {
         }
     },
 
-    deleteUpload: (req, res, nxt) => {
+    deleteUpload: async (req, res, nxt) => {
         console.log("GET on /user/:username/upload/delete");
         try {
-            if (!fs.existsSync(`./uploads/${req.params.username}.png`)) {
-                return nxt(new HttpError(404, "file not found"));
+			const oldImage = await User.findOne({
+                username: req.params.username,
+            });
+            console.log(oldImage.img.slice(oldImage.img.lastIndexOf("-")));
+
+            if (
+                !oldImage.img.includes("googleusercontent") ||
+                !oldImage.img.includes("githubusercontent") ||
+                !fs.existsSync(
+                    `./uploads/${req.params.username}${oldImage.img.slice(
+                        oldImage.img.lastIndexOf("-")
+                    )}`
+                )
+            ) {
+                const update = await User.updateOne(
+                    { username: req.params.username },
+                    { img: `http://${req.headers.host}/default.png` }
+                );
+                console.log(update);
+                // return nxt(new HttpError(404, "file not found"));
             }
-            fs.unlink(`./uploads/${req.params.username}.png`, (err) =>
-                err ? console.log(err) : null
+            fs.unlink(
+                `./uploads/${req.params.username}${oldImage.img.slice(oldImage.img.lastIndexOf("-"))}`,
+                (err) => (err ? console.log(err) : null)
             );
             return res.send({ message: "Profile image deleted" });
         } catch (err) {
