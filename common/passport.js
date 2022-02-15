@@ -19,10 +19,9 @@ passport.use(new GoogleStrategy(
     const DBUserFound = await User.findOne({email: profile.emails[0].value});
     if(DBUserFound){
       if(!DBUserFound.googleId) await User.updateOne(
-        {email: profile.emails[0].value},
         {googleId: profile.id}
       )
-      return done(null, DBUserFound.username);
+      return done(null, DBUserFound.email);
     }
 
     const DBUserCreated = await User.create({
@@ -31,7 +30,7 @@ passport.use(new GoogleStrategy(
       googleId: profile.id,
       img: profile.photos[0].value,
     });
-    if(DBUserCreated) return done(null, DBUserCreated.username);
+    if(DBUserCreated) return done(null, DBUserCreated.email);
 
     return done(err);
   }
@@ -49,10 +48,9 @@ passport.use(new GitHubStrategy({
     const DBUserFound = await User.findOne({email: profile.emails[0].value});
     if(DBUserFound){
       if(!DBUserFound.githubId) await User.updateOne(
-        {email: profile.emails[0].value},
         {githubId: profile.id}
       )
-      return done(null, DBUserFound.username);
+      return done(null, DBUserFound.email);
     }
 
     const DBUserCreated = await User.create({
@@ -61,7 +59,7 @@ passport.use(new GitHubStrategy({
       githubId: profile.id,
       img: profile.photos[0].value,
     });
-    if(DBUserCreated) return done(null, DBUserCreated.username);
+    if(DBUserCreated) return done(null, DBUserCreated.email);
 
     return done(err);
   }
@@ -75,19 +73,19 @@ passport.use(new UniqueTokenStrategy({tokenQuery: 'token'}, (token, done) => {
       jwt.verify(token, process.env.JWTKEY, (err, decoded) => {
         if (err) return done(err);
         if (!decoded) return done(null, false);
-        return done(null, user.username);
+        return done(null, user.email);
       })
     });
   }),
 );
 
 
-passport.serializeUser((username, done) => {
-  return done(null, username);
+passport.serializeUser((email, done) => {
+  return done(null, email);
 });
 
-passport.deserializeUser(async(username, done) => {
-  const DBUser = await User.findOne({username});
+passport.deserializeUser(async(email, done) => {
+  const DBUser = await User.findOne({email});
   if(!DBUser) return done(null, false);
   return done(null, DBUser);
 });
