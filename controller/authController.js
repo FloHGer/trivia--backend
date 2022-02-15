@@ -41,7 +41,7 @@ module.exports = authController = {
         subject: 'TRIVIA Game - LogIn requested',
         body: {
           username: DBUser.username !== DBUser.email ? DBUser.username : 'new user',
-          link: `http://${req.headers.host}/auth/email/?token=${token}`, // change to https later
+          link: `https://${req.headers.host}/auth/email/?token=${token}`,
         },
       });
       if(status) return res.send({message: status});

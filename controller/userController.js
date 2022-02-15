@@ -28,25 +28,25 @@ module.exports = userController = {
                     username: req.body.updates.username,
                 }).count();
                 if (userCheck) return nxt(new HttpError(409, "username taken"));
-
-                if (
-                    (
-                        await User.findOne({ username: req.params.username })
-                    ).img.startsWith(`http://${req.headers.host}`)
-                ) {
-                    fs.rename(
-                        `./uploads/${req.params.username}.png`,
-                        `./uploads/${req.body.updates.username}.png`,
-                        (err) => (err ? console.log(err) : null)
-                    );
-                    req.body.updates.img = `http://${req.headers.host}/${req.body.updates.username}.png`;
-                }
             }
             if (req.body.updates.email) {
                 const userCheck = await User.find({
                     email: req.body.updates.email,
                 }).count();
                 if (userCheck) return nxt(new HttpError(409, "email taken"));
+            }
+
+            const DBUser = await  User.findOne({ username: req.params.username });
+            if (req.body.updates.username
+            && DBUser.img.startsWith(`https://${req.headers.host}`)
+            && !DBUser.img.endsWith('default.png')
+            ) {
+                fs.rename(
+                    `./uploads/${req.params.username}.png`,
+                    `./uploads/${req.body.updates.username}.png`,
+                    (err) => (err ? console.log(err) : null)
+                );
+                req.body.updates.img = `https://${req.headers.host}/${req.body.updates.username}.png`;
             }
 
             const update = await User.updateOne(
@@ -163,43 +163,34 @@ module.exports = userController = {
     uploadImage: async (req, res, nxt) => {
         console.log("POST on /user/:username/upload");
         try {
-			const oldImage = await User.findOne({username: req.params.username})
-			console.log(oldImage.img.slice(oldImage.img.lastIndexOf("-")));
-
-			if (!oldImage) return nxt(new HttpError(404, 'user not found'))
-			if (
-                oldImage &&
-                !oldImage.img.includes("googleusercontent") &&
-                !oldImage.img.includes("githubusercontent") &&
-                oldImage.img !== `${process.env.CALLBACK}/default.png`
-            ) {
-                fs.unlink(
-                    `./uploads/${req.params.username}${oldImage.img.slice(
-                        oldImage.img.lastIndexOf("-")
-                    )}`,
-                    (err) => (err ? console.log(err) : null)
-                );
-            }
-            console.log("Request:", req.files);
             if (!req.files)
                 return nxt(new HttpError(404, "picture not attached"));
             if (req.files.userImg.size > 20 * 1024 * 1024)
                 return nxt(new HttpError(404, "file too big"));
+
+			const DBUser = await User.findOne({username: req.params.username})
+			if (!DBUser) return nxt(new HttpError(404, 'user not found'));
+			if (
+                DBUser &&
+                !DBUser.img.includes("googleusercontent") &&
+                !DBUser.img.includes("githubusercontent") &&
+                DBUser.img !== `${process.env.CALLBACK}/default.png`
+            ) {
+                fs.unlink(
+                    `./uploads/${req.params.username}.png`,
+                    (err) => (err ? console.log(err) : null)
+                );
+            }
+            
             const userImg = req.files.userImg;
-            // console.log("UserImg:", userImg);
-            userImg.name = `${req.params.username}-${userImg.name}.png`;
-            // console.log(userImg.name);
+            userImg.name = `${req.params.username}.png`;
             const path = `./uploads/${userImg.name}`;
             userImg.mv(path);
-            // console.log(path);
             const update = await User.updateOne(
                 { username: req.params.username },
-                { img: `http://${req.headers.host}/${userImg.name}` }
+                { img: `https://${req.headers.host}/${userImg.name}` }
             );
-            if (!update.matchedCount)
-                return nxt(new HttpError(404, "user not found"));
-            // if (!update.modifiedCount) return res.send({message: 'user not modified'});
-            // console.log(update);
+            if (!update.matchedCount) return nxt(new HttpError(404, "user not found"));
             return res.send({ message: "profile image uploaded" });
         } catch (err) {
             nxt(err);
@@ -209,29 +200,24 @@ module.exports = userController = {
     deleteUpload: async (req, res, nxt) => {
         console.log("GET on /user/:username/upload/delete");
         try {
-			const oldImage = await User.findOne({
+			const DBUser = await User.findOne({
                 username: req.params.username,
             });
-            console.log(oldImage.img.slice(oldImage.img.lastIndexOf("-")));
 
             if (
-                !oldImage.img.includes("googleusercontent") ||
-                !oldImage.img.includes("githubusercontent") ||
+                !DBUser.img.includes("googleusercontent") &&
+                !DBUser.img.includes("githubusercontent") &&
                 !fs.existsSync(
-                    `./uploads/${req.params.username}${oldImage.img.slice(
-                        oldImage.img.lastIndexOf("-")
-                    )}`
+                    `./uploads/${req.params.username}.png`
                 )
             ) {
-                const update = await User.updateOne(
+                await User.updateOne(
                     { username: req.params.username },
-                    { img: `http://${req.headers.host}/default.png` }
+                    { img: `https://${req.headers.host}/default.png` }
                 );
-                console.log(update);
-                // return nxt(new HttpError(404, "file not found"));
             }
             fs.unlink(
-                `./uploads/${req.params.username}${oldImage.img.slice(oldImage.img.lastIndexOf("-"))}`,
+                `./uploads/${req.params.username}.png`,
                 (err) => (err ? console.log(err) : null)
             );
             return res.send({ message: "Profile image deleted" });
