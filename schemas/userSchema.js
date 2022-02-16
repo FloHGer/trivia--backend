@@ -73,7 +73,14 @@ const userSchema = new Schema({
   token: {type: String},
   options: {
     gameMode: {type: String, default: 'quick'},
-    categories: [{type: String}],
+    categories: {type: Array, default: [
+      'choose',
+      'choose',
+      'choose',
+      'choose',
+      'choose',
+      'choose',
+    ]},
   },
 })
 

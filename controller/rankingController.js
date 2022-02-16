@@ -1,4 +1,5 @@
 const Ranking = require('../schemas/rankingSchema.js');
+const { HttpError } = require("../errors/errorController.js");
 
 module.exports = rankingController = {
   highScore: async(req, res, nxt) => {
