@@ -41,7 +41,7 @@ store.on('error', (err) => console.error(err));
 app.use(cors({
   origin: ['http://localhost:3000', 'https://trivia-ga.me', process.env.FRONTEND],
   methods: 'GET, POST, PATCH, DELETE',
-  header: '*',
+  header: 'Content-Type, Authorization',
   credentials: true,
 }));
 app.use(express.static('uploads'))

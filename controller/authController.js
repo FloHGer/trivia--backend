@@ -52,21 +52,21 @@ module.exports = authController = {
   emailCallback: passport.authenticate('token', {
     successRedirect: `${process.env.FRONTEND}/dashboard`,
     successMessage: `SUCCESS: date: ${(new Date()).toLocaleDateString('de-de')} -- time: ${(new Date()).toLocaleTimeString('de-de')}`,
-    failureRedirect: `${process.env.FRONTEND}`,
+    failureRedirect: `${process.env.FRONTEND}/login`,
     failureMessage: `FAIL: date: ${(new Date()).toLocaleDateString('de-de')} -- time: ${(new Date()).toLocaleTimeString('de-de')}`,
   }),
 
   googleCallback: passport.authenticate('google', {
     successRedirect: `${process.env.FRONTEND}/dashboard`,
     successMessage: `SUCCESS: date: ${(new Date()).toLocaleDateString('de-de')} -- time: ${(new Date()).toLocaleTimeString('de-de')}`,
-    failureRedirect: `${process.env.FRONTEND}`,
+    failureRedirect: `${process.env.FRONTEND}/login`,
     failureMessage: `FAIL: date: ${(new Date()).toLocaleDateString('de-de')} -- time: ${(new Date()).toLocaleTimeString('de-de')}`,
   }),
 
   githubCallback: passport.authenticate('github', {
     successRedirect: `${process.env.FRONTEND}/dashboard`,
     successMessage: `SUCCESS: date: ${(new Date()).toLocaleDateString('de-de')} -- time: ${(new Date()).toLocaleTimeString('de-de')}`,
-    failureRedirect: `${process.env.FRONTEND}`,
+    failureRedirect: `${process.env.FRONTEND}/login`,
     failureMessage: `FAIL: date: ${(new Date()).toLocaleDateString('de-de')} -- time: ${(new Date()).toLocaleTimeString('de-de')}`,
   }),
 
