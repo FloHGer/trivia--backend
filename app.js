@@ -52,12 +52,12 @@ app.use(express.json());
 app.use(session({
   secret: process.env.SESSION_SECRET,
   cookie: {
-    domain: `.${process.env.FRONTEND}`,
+    domain: 'trivia-ga.me',
     sameSite: none,
     maxAge: 1000 * 60 * 60 * 24 * 30 // 30days
   },
   store,
-  resave: true,
+  resave: false,
   saveUninitialized: false,
 }));
 app.use(passport.initialize());
