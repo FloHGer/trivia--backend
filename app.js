@@ -56,6 +56,7 @@ app.use(session({
     domain: 'trivia-ga.me',
     sameSite: 'none',
     secure: true,
+    proxy: true,
   },
   store,
   resave: false,
