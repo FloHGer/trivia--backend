@@ -56,7 +56,6 @@ app.use(session({
     domain: 'trivia-ga.me',
     sameSite: 'none',
     secure: true,
-    path: '/dashboard',
   },
   store,
   resave: false,
