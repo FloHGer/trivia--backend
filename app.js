@@ -52,10 +52,11 @@ app.use(express.json());
 app.use(session({
   secret: process.env.SESSION_SECRET,
   cookie: {
-    domain: 'trivia-ga.me',
     maxAge: (1000 * 60 * 60 * 24) * 30, // 30days
+    domain: 'trivia-ga.me',
     sameSite: 'none',
     secure: true,
+    path: '/dashboard',
   },
   store,
   resave: false,
