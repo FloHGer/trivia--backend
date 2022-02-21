@@ -51,12 +51,13 @@ app.use(fileUpload({
 app.use(express.json());
 app.use(session({
   secret: process.env.SESSION_SECRET,
+  proxy: true,
   cookie: {
     maxAge: (1000 * 60 * 60 * 24) * 30, // 30days
     domain: 'trivia-ga.me',
     sameSite: 'none',
     secure: true,
-    proxy: true,
+    
   },
   store,
   resave: false,
