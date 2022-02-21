@@ -66,6 +66,7 @@ passport.use(new GitHubStrategy({
 ));
 
 
+// EMAIL
 passport.use(new UniqueTokenStrategy({tokenQuery: 'token'}, (token, done) => {
     User.findOne({token}, (err, user) => {
       if (err) return done(err);
