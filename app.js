@@ -58,7 +58,7 @@ app.use(session({
   },
   store,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
 }));
 app.use(passport.initialize());
 app.use(passport.session());
