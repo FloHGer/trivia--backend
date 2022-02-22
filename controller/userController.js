@@ -27,7 +27,7 @@ module.exports = userController = {
                 const userCheck = await User.find({
                     username: req.body.updates.username,
                 }).count();
-                if (userCheck) return nxt(new HttpError(409, "username taken"));
+                if (userCheck) return res.send({message: 'username taken'});
             }
             if (req.body.updates.email) {
                 const userCheck = await User.find({
@@ -57,7 +57,6 @@ module.exports = userController = {
                 return nxt(new HttpError(404, "user not found"));
             if (!update.modifiedCount && update.matchedCount)
                 return res.status(204).send();
-
             return res.send({ message: "user updated" });
         } catch (err) {
             nxt(err);

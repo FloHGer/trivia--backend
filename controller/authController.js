@@ -15,14 +15,26 @@ module.exports = authController = {
 
 
   loginRequest: async (req, res, nxt) => {
-    console.log('POST on /auth/mail');
+    console.log('POST on /auth/email');
     try {
       // check for user
       let DBUser = await User.findOne({email: req.body.email});
       // create user if unregistered
       if (!DBUser) {
+        const mailPrefix = req.body.email.slice(0, req.body.email.indexOf('@'));
+        const generatedUsername = undefined;
+        if(await User.findOne({username: mailPrefix})){
+          let counter = 1;
+          const regexp = new RegExp("^"+ mailPrefix);
+          const searchResult = await User.find({username: regexp});
+          do{
+            const usernameExists = searchResult.filter(user => user.username === mailPrefix + counter);
+            if(!usernameExists) generatedUsername = mailPrefix + counter;
+            counter++;
+          }while(generatedUsername === undefined);
+        }
         DBUser = await User.create({
-          username: req.body.email.slice(0, req.body.email.indexOf('@')),
+          username: generatedUsername || mailPrefix,
           email: req.body.email,
           img: `${process.env.CALLBACK}/default.png`,
         });
