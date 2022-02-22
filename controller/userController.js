@@ -197,28 +197,27 @@ module.exports = userController = {
     },
 
     deleteUpload: async (req, res, nxt) => {
-        console.log("GET on /user/:username/upload/delete");
+        console.log("GET on /user/:username/upload");
         try {
+            fs.unlink(
+                `./uploads/${req.params.username}.png`,
+                (err) => (err ? console.log(err) : null)
+            );
+
 			const DBUser = await User.findOne({
                 username: req.params.username,
             });
 
             if (
                 !DBUser.img.includes("googleusercontent") &&
-                !DBUser.img.includes("githubusercontent") &&
-                !fs.existsSync(
-                    `./uploads/${req.params.username}.png`
-                )
+                !DBUser.img.includes("githubusercontent")
             ) {
                 await User.updateOne(
                     { username: req.params.username },
                     { img: `https://${req.headers.host}/default.png` }
                 );
             }
-            fs.unlink(
-                `./uploads/${req.params.username}.png`,
-                (err) => (err ? console.log(err) : null)
-            );
+            
             return res.send({ message: "Profile image deleted" });
         } catch (err) {
             nxt(err);
