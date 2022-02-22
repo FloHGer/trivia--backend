@@ -49,7 +49,7 @@ app.use(fileUpload({
   createParentPath: true,
 }));
 app.use(express.json());
-app.use(()=> console.log(req.headers))
+app.use((req)=> console.log(req.headers))
 app.use(session({
   secret: process.env.SESSION_SECRET,
   cookie: {
