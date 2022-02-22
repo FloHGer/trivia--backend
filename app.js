@@ -53,12 +53,12 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   cookie: {
     maxAge: (1000 * 60 * 60 * 24) * 30, // 30days
-    // SameSite: 'None',
-    // secure: true,
+    sameSite: none,
+    secure: true,
   },
   store,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
 }));
 app.use(passport.initialize());
 app.use(passport.session());
