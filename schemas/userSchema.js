@@ -16,7 +16,7 @@ const userSchema = new Schema({
   githubId: {type: Number},
   dob: {type: Date, default: null},
   nat: {type: String, default: 'un'},
-  img: {type: String, default: 'http://localhost:3003/default.png'},
+  img: {type: String, default: 'https://trivia-ga.me/default.png'},
   rankings: {
     totalScore: {type: Number},
     highScore: {type: Number},
