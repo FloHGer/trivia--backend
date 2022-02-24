@@ -131,19 +131,6 @@ module.exports = userController = {
         }
     },
 
-    getRanks: async (req, res, nxt) => {
-        console.log("GET on /user/:username/ranks");
-        // try {
-        //   const rankings = await Rank.find();
-        //   rankings.map(ranking => {ranking.name: ranking.list.map(
-        //     (listEntry, i) => listEntry.username === res.params.username ? i : null
-        //   )});
-        //   return res.send({message: "success", payload: XXX});
-        // } catch (err) {
-        //   nxt(err);
-        // }
-    },
-
     getAchievs: async (req, res, nxt) => {
         console.log("GET on /user/:username/achieves");
         try {

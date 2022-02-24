@@ -21,8 +21,6 @@ router.route('/:username/games')
 
 router.get('/:username/stats', userController.getStats);
 
-router.get('/:username/ranks', userController.getRanks);
-
 router.get('/:username/achievs', userController.getAchievs);
 
 // route
