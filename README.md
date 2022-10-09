@@ -1,4 +1,4 @@
-# Trivia--backend
+# trivia--backend
 
 ![alt not found](./trivia--backend.png)
 
